@@ -1,0 +1,207 @@
+@charset "utf-8";
+.firstMenu_A {
+	
+background: url(./images/firstMenu/1.png);
+}
+.formstyle {  font-family: "宋体"; font-size: 15pt; color:red}
+.tipstyle {font-size: 15pt}
+.my_row_Red td { background:red!important;} 
+/**center picture */
+.centerbg {	
+background:#ECF5FC;
+
+background-image:url(images/center.png)!important;
+background-repeat: no-repeat;
+background-size:100% auto;
+
+filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/center.png', sizingMethod='scale'); 
+
+}
+/**top 鑳屾櫙鍥剧墖 */
+.topbg {	
+background:#ADD2ED;
+/**background-image:url(images/north_bg.png)!important;*/
+background-color:bule,
+background-repeat: no-repeat;
+background-size:100% auto;
+filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/north_bg.png', sizingMethod='scale'); 
+
+}
+/**top logo */
+.toplogo {	
+background-image:url(images/main_north_cn.png)!important;
+background-repeat: no-repeat;
+}
+/**璁惧绠＄悊涓�骇鑿滃崟鏈�涓姸鎬�*/
+.deviceunselect{
+background-image:url(images/device_management_unselected.png)!important;
+background-repeat: no-repeat!important;
+background-color:#4B9CD7!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**璁惧绠＄悊涓�骇鑿滃崟閫変腑鐘舵� */
+.deviceselect{
+background:#ADD2ED!important;
+background-image:url(images/device_management_selected.png)!important;
+background-repeat: no-repeat!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**鍛婅绠＄悊涓�骇鑿滃崟鏈�涓姸鎬�*/
+.alarmunselect{
+background:#4B9CD7!important;
+background-image:url(images/trap_management_unselected.png)!important;
+background-repeat: no-repeat!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**鍛婅绠＄悊涓�骇鑿滃崟閫変腑鐘舵� */
+.alarmselect{
+background:#ADD2ED!important;
+background-image:url(images/trap_management_selected.png)!important;
+background-repeat: no-repeat!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**涓氬姟绠＄悊涓�骇鑿滃崟鏈�涓姸鎬�*/
+.businessunselect{
+background:#4B9CD7!important;
+background-image:url(images/business_management_unselected.png)!important;
+background-repeat: no-repeat!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**涓氬姟绠＄悊涓�骇鑿滃崟閫変腑鐘舵� */
+.businessselect{
+background:#ADD2ED!important;
+background-image:url(images/business_management_selected.png)!important;
+background-repeat: no-repeat!important;
+margin-right:3px;
+padding-left:40px!important;
+}
+/**绯荤粺绠＄悊涓�骇鑿滃崟鏈�涓姸鎬�*/
+.systemunselect{
+background:#4B9CD7!important;
+background-image:url(images/system_management_unselected.png)!important;
+background-repeat: no-repeat!important;
+padding-left:40px!important;
+}
+/**绯荤粺绠＄悊涓�骇鑿滃崟閫変腑鐘舵� */
+.systemselect{
+background:#ADD2ED!important;
+background-image:url(images/system_management_selected.png)!important;
+background-repeat: no-repeat!important;
+padding-left:40px!important;
+}
+/**椤甸潰TOP鏍忕揣鎬ュ憡璀﹀浘鏍�*/
+.alarm1{
+	margin : 1px 3px 1px 1px;
+	background : #C75C5C;
+	background-image:url(images/alet_red_bg.png)!important;
+	border:0px;
+	
+}
+/**椤甸潰TOP鏍忎弗閲嶅憡璀﹀浘鏍�*/
+.alarm2{
+	margin : 1px 3px 1px 1px;
+	background : #E0995E;
+	background-image:url(images/alet_orange_bg.png)!important;
+	border:0px;
+	
+}
+/**椤甸潰TOP鏍忔櫘閫氬憡璀﹀浘鏍�*/
+.alarm3{
+	margin : 1px 3px 1px 1px;
+	background : #F5CF87;
+	background-image:url(images/alet_yellow_bg.png)!important;
+	border:0px;
+	
+}
+/**椤甸潰TOP鏍忚交寰憡璀﹀浘鏍�*/
+.alarm4{
+	margin : 1px 3px 1px 1px;
+	background : #77B3D4;
+	background-image:url(images/alet_blue_bg.png)!important;
+	border:0px;
+	
+}
+/**璁惧绠＄悊tab椤靛浘鏍囬�涓姸鎬�*/
+.deviceTabsel{
+	background-image:url(images/device_tab_ico_selected.png)!important;
+}
+/**璁惧绠＄悊tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.deviceTabunsel{
+	background-image:url(images/device_tab_ico_unselected.png)!important;
+}
+/**鍛婅澶勭悊tab椤靛浘鏍囬�涓姸鎬�*/
+.alarmTabsel{
+	background-image:url(images/trap_tab_ico_selected.png)!important;
+}
+/**鍛婅澶勭悊tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.alarmTabunsel{
+	background-image:url(images/trap_tab_ico_unselected.png)!important;
+}
+
+.sysTabsel{
+	background-image:url(images/system_tab_ico_selected.png)!important;
+}
+.sysTabunsel{
+	background-image:url(images/system_tab_ico_unselected.png)!important;
+}
+/**Top淇℃伅tab椤靛浘鏍囬�涓姸鎬�*/
+.topTabsel{
+	background-image:url(images/top_tab_ico_selected.png)!important;
+}
+/**Top淇℃伅tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.topTabunsel{
+	background-image:url(images/top_tab_ico_unselected.png)!important;
+}
+/**Gis淇℃伅tab椤靛浘鏍囬�涓姸鎬�*/
+.gisTabsel{
+	background-image:url(images/gis_tab_ico_selected.png)!important;
+}
+/**Gis淇℃伅tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.gisTabunsel{
+	background-image:url(images/gis_tab_ico_unselected.png)!important;
+}
+/**鐢ㄦ埛绠＄悊tab椤靛浘鏍囬�涓姸鎬�*/
+.userTabsel{
+	background-image:url(images/user_tab_ico_selected.png)!important;
+}
+/**鐢ㄦ埛绠＄悊tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.userTabunsel{
+	background-image:url(images/user_tab_ico_unselected.png)!important;
+}
+/**鍗囩骇绠＄悊tab椤靛浘鏍囬�涓姸鎬�*/
+.upgradTabsel{
+	background-image:url(images/upgrade_tab_ico_selected.png)!important;
+}
+/**鍗囩骇绠＄悊tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.upgradTabunsel{
+	background-image:url(images/upgrade_tab_ico_unselected.png)!important;
+}
+/**鏃ュ織绠＄悊tab椤靛浘鏍囬�涓姸鎬�*/
+.logTabsel{
+	background-image:url(images/log_tab_ico_selected.png)!important;
+}
+/**鏃ュ織绠＄悊tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.logTabunsel{
+	background-image:url(images/log_tab_ico_unselected.png)!important;
+}
+/**璁惧璇︽儏tab椤靛浘鏍囬�涓姸鎬�*/
+.deviceServTabsel{
+	background-image:url(images/deviceServ_tab_ico_selected.png)!important;
+}
+/**璁惧璇︽儏tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.deviceServTabunsel{
+	background-image:url(images/deviceServ_tab_ico_unselected.png)!important;
+}
+/**鎿嶄綔鐩戞帶tab椤靛浘鏍囬�涓姸鎬�*/
+.monitorTabsel{
+	background-image:url(images/monitor_tab_ico_selected.png)!important;
+}
+/**鎿嶄綔鐩戞帶tab椤靛浘鏍囨湭閫変腑鐘舵� */
+.monitorTabunsel{
+	background-image:url(images/monitor_tab_ico_unselected.png)!important;
+}

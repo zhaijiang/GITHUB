@@ -1,0 +1,106 @@
+@charset "utf-8";
+/** zj*/
+html body {
+	margin: 0px;
+	width:100%;
+	height:100%;
+	text-align:center;
+	background-position:center;/*控制背景图片的自由缩放*/
+	/*background-size: cover;*/
+	/*background-image: url(./login/mainbg.jpg); */
+	background-image: url(./login/login_bg.png); 
+}
+
+#login_pic{
+	/*margin: auto;*/
+	width: 700px;
+	height: 500px;
+	background-repeat: no-repeat;
+	background-position: 85px 250px;
+	/*background-image:url(./login/login_pic_cn.png);*/
+}
+
+#login {
+	margin: auto;
+	width: 700px;
+	height: 400px;
+	background-repeat: no-repeat;
+	background-position: 50% 200px;
+	/*background-image: url(./login/pg.png);*/
+}
+/*#loginLanguage{
+	margin-left: 70%;
+}*/
+	
+#txtUserName,#txtPwd {
+	border: 1px solid #4A95C9;
+	background-color: #F0F7FC;
+	font-size: 17px;
+	font-weight: bold;
+	width: 165px;
+	height: 23px;
+}
+
+#txtUserName {
+	margin-top:-27px;
+	margin-left: 10px;
+}
+
+#txtPwd {
+	margin-top:-21px;
+	margin-left: 10px;
+}
+
+#btnLogin{
+	background : transparent;
+	width: 89px;
+	height: 24px;
+	margin-top: 18px;
+	background-repeat: no-repeat;
+	border: 0px;
+	cursor: pointer;
+	overflow:hidden
+}
+
+#loginInfo {
+	font-size: 18px;
+	color:  #FFFFFF;
+	margin-left: 330px;
+	boder :0px solid;
+	width: 350px;
+	height: 34px;
+	margin-top: 20px;
+	border: 0px;
+	cursor: pointer;
+}
+
+#userNameTitle {
+	font-size: 12pt;
+	margin-left: 260px;
+	margin-top:-215px;
+}
+
+#passwordTitle {
+	margin-left: 262px;
+	font-size: 12pt;
+	margin-top:25px;
+}
+
+#btnLogin {
+	background-image: url(./login/login_button_normal.png);
+	margin-left: 426px;
+}
+
+#btnLogin:hover {
+	background-image: url(./login/login_button_highLight.png);
+}
+
+/*#btnCancel {
+	/*background-image: url(./login/button_cz.png);*/
+	/*background-image: url(./login/login_button_normal.png);
+	margin-left: 60px;
+}
+
+#btnCancel:hover {
+	background-image: url(./login/login_button_highLight.png);
+}*/

@@ -1,0 +1,4 @@
+jdbcUrl = jdbc:mysql://localhost/pdms?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+user = zj
+password =123
+devMode = true
