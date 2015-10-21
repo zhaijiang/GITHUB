@@ -71,7 +71,7 @@ $(document).ready(
 		</div>
 		-->
 		<div id="login">
-			<form action="backmanage/login" method="post" id="loginForm">
+			<form action="BackManageController/login" method="post" id="loginForm">
 				<!--<input name="loginLanguage" type="text" id="txtLoginLanguage"
 					style="display: none;" />-->
 			<div id='login_pic'></div>

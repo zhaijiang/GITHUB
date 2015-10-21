@@ -80,7 +80,7 @@ Ext.define("com.module.frame.userRole.UserAddWindow", {
 				    regex:frame.config.InputCheck.inputEnNum ,
                     vtype:"checkSame",//自定义的验证类型
                     vtypeText:frame.lang.frame.userRole.NmsUserPanel.passwordDiffer,
-　　                                           targetCmpId:"userPassword11"//要比较的另外一个的组件的id
+                                       targetCmpId:"userPassword11"//要比较的另外一个的组件的id
        
 		  
 	   });

@@ -101,10 +101,10 @@ Ext.override(Ext.selection.Model, {
 
 /** 校验两个field的值是否一致。用于确认密码与原密码是否一致*/
  
-　Ext.form.Field.prototype.msgTarget='side';
-  //提示的方式，枚举值为"qtip","title","under","side",id(元素id)
-　　//side方式用的较多，右边出现红色感叹号，鼠标上去出现错误提示，其他的我就不介绍了，可自行验证
-　　//大家可以分别去掉这两行代码，看效果就会明白他们的作用，（放在onReady的function（）{}中）
+Ext.form.Field.prototype.msgTarget='side';
+//提示的方式，枚举值为"qtip","title","under","side",id(元素id)
+//side方式用的较多，右边出现红色感叹号，鼠标上去出现错误提示，其他的我就不介绍了，可自行验证
+//大家可以分别去掉这两行代码，看效果就会明白他们的作用，（放在onReady的function（）{}中）
      Ext.apply(Ext.form.VTypes, {  
          checkSame: function(val, field) {     //返回true，则验证通过，否则验证失败  
                  var cmp = Ext.getCmp(field.targetCmpId);   //通过targetCmpId的字段查找组件  

@@ -24,7 +24,9 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.render.ViewType;
 
+import ems.backmanage.controller.BackDoctorController;
 import ems.backmanage.controller.BackManageController;
+import ems.backmanage.controller.BackUserController;
 import ems.comm.JFinalInitialization;
 import ems.controller.DoctorController;
 import ems.controller.FileController;
@@ -39,6 +41,7 @@ import ems.model.Globals;
 import ems.model.Orders;
 import ems.model.Sysoper;
 import ems.model.User;
+import ems.model.Useraddr;
 /**
  * 功能描述：
  *
@@ -70,7 +73,12 @@ public class EmsConfig extends JFinalConfig
         //用户文件上传
         me.add("upload",FileController.class,"/");
         //用户文件上传
-        me.add("backmanage",BackManageController.class);
+        me.add("BackManageController",BackManageController.class);
+        //医生后台接口
+        me.add("BackDoctorController",BackDoctorController.class);
+        
+        //用户后台接口
+        me.add("BackUserController",BackUserController.class);
     }
 
     /**
@@ -85,6 +93,7 @@ public class EmsConfig extends JFinalConfig
         
      // 配置ActiveRecord插件
         ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
+        arp.setShowSql(true);
         me.add(arp);
         arp.addMapping("user",User.class);
         arp.addMapping("orders",Orders.class);
@@ -92,6 +101,7 @@ public class EmsConfig extends JFinalConfig
         arp.addMapping("sysoper",Sysoper.class);
         arp.addMapping("globals",Globals.class);
         arp.addMapping("ddmap",Ddmap.class);
+        arp.addMapping("Useraddr",Useraddr.class);
     }
    
     /**

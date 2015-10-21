@@ -134,7 +134,8 @@ function loadModule() {
 //	});
 //	
 
-	Ext.syncRequire("com.module.common.manage.init");
+	Ext.syncRequire("com.module.common.doctor.init");
+	Ext.syncRequire("com.module.common.user.init");
 	Ext.syncRequire("com.module.common.monitor.init");
 	Ext.syncRequire("com.module.common.statistic.init");
 	Ext.syncRequire("com.module.frame.userRole.init");
