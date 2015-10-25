@@ -11,6 +11,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.mchange.v2.sql.SqlUtils;
 
 import ems.backmanage.BackConfig;
 import ems.backmanage.frame.database.entity.QueryCondition;
@@ -136,6 +137,135 @@ public class BackUserController extends BaseController {
 			    else{
 			        setAttr("success",false);
 			    }
+				renderJson();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+	/**
+	 * 查询用户地址
+	 */
+	public void loadUserAddr()
+	{
+		 try {
+			String condition = getPara("condition");
+			 Integer start=getPara("start")==null?null:Integer.parseInt(  getPara("start"));
+			Integer limit= getPara("limit")==null?null:Integer.parseInt(  getPara("limit"));
+			 QueryCondition[] conditions = {};
+				if (condition != null) {
+					conditions = FrameJsonUtil.getObjectMapper().readValue(
+							condition, QueryCondition[].class);
+				}
+				Map<String, Object> result = FrameDatabaseUtil
+						.queryByCondition(SqlBackUser.loadUserAddrByCondition,
+								Arrays.asList(conditions), start, limit);
+				setAttr("returnData",result.get("datas"));
+				setAttr("total",result.get("total"));
+				setAttr("success",true);
+				renderJson();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+
+	/**
+	 * 查询用户收藏
+	 */
+	public void loadUserSave()
+	{
+		 try {
+			String condition = getPara("condition");
+			 Integer start=getPara("start")==null?null:Integer.parseInt(  getPara("start"));
+			Integer limit= getPara("limit")==null?null:Integer.parseInt(  getPara("limit"));
+			 QueryCondition[] conditions = {};
+				if (condition != null) {
+					conditions = FrameJsonUtil.getObjectMapper().readValue(
+							condition, QueryCondition[].class);
+				}
+				Map<String, Object> result = FrameDatabaseUtil
+						.queryByCondition(SqlBackUser.loadUserSaveByCondition,
+								Arrays.asList(conditions), start, limit);
+				setAttr("returnData",result.get("datas"));
+				setAttr("total",result.get("total"));
+				setAttr("success",true);
+				renderJson();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+
+	/**
+	 * 查询用户收藏
+	 */
+	public void loadUserVoucher()
+	{
+		 try {
+			String condition = getPara("condition");
+			 Integer start=getPara("start")==null?null:Integer.parseInt(  getPara("start"));
+			Integer limit= getPara("limit")==null?null:Integer.parseInt(  getPara("limit"));
+			 QueryCondition[] conditions = {};
+				if (condition != null) {
+					conditions = FrameJsonUtil.getObjectMapper().readValue(
+							condition, QueryCondition[].class);
+				}
+				Map<String, Object> result = FrameDatabaseUtil
+						.queryByCondition(SqlBackUser.loadUserVoucherByCondition,
+								Arrays.asList(conditions), start, limit);
+				setAttr("returnData",result.get("datas"));
+				setAttr("total",result.get("total"));
+				setAttr("success",true);
+				renderJson();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+
+	/**
+	 * 查询用户收藏
+	 */
+	public void loadUserUnVoucher()
+	{
+		 try {
+			String condition = getPara("condition");
+			 Integer start=getPara("start")==null?null:Integer.parseInt(  getPara("start"));
+			Integer limit= getPara("limit")==null?null:Integer.parseInt(  getPara("limit"));
+			 QueryCondition[] conditions = {};
+				if (condition != null) {
+					conditions = FrameJsonUtil.getObjectMapper().readValue(
+							condition, QueryCondition[].class);
+				}
+				Map<String, Object> result = FrameDatabaseUtil
+						.queryByCondition(SqlBackUser.loadUserUnVoucherByCondition,
+								Arrays.asList(conditions), start, limit);
+				setAttr("returnData",result.get("datas"));
+				setAttr("total",result.get("total"));
+				setAttr("success",true);
+				renderJson();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} 
+	}
+	
+
+	/**
+	 * 查询用户收藏
+	 */
+	public void groupUserAddr()
+	{
+		 try {
+			     List<Record> result = Db.find(SqlBackUser.groupUserAddr);
+				setAttr("returnData",result);
+			
+				setAttr("success",true);
 				renderJson();
 		} catch (Exception e) {
 

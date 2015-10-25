@@ -331,7 +331,6 @@ Ext
 		var nowPageSize= parseInt(comboBox.getValue());
         bbar.pageSize =nowPageSize;
          store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         store.load();
         store.loadPage(1);//显示第一页
          
      });

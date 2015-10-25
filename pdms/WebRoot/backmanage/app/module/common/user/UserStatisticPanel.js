@@ -6,12 +6,12 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
 	initComponent:function(){
 		var me=this;
 		var usercount = Ext.create('Ext.grid.Panel', {
-        	 title:'usercount',
+        	 title:'用户统计信息',
         	 autoScroll:true,
         	 width:'100%',
 			 height:300,
         	store: Ext.create('Ext.data.Store', {
-        	    fields : [ 'uname','moneycount','lct'],
+        	    fields : [ 'uname','vouchercount','lct'],
 			    pageSize : 10,
 			    autoLoad : false,
 			    sorters: [{
@@ -40,14 +40,14 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
         	columns : [  {
 			xtype : 'rownumberer'
 			}, {
-				header : "uname",
+				header : "用户姓名",
 				dataIndex : 'uname',
 				width : 100
 			},
 			 {
-				header : "moneycount",
-				dataIndex : 'moneycount',
-				width : 100
+				header : "使用代金劵总额",
+				dataIndex : 'vouchercount',
+				width : 150
 			},
 			
 			{
@@ -71,9 +71,8 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
       });
        pageSizeCombousercount.on("select", function (comboBox) {
 		var nowPageSize= parseInt(comboBox.getValue());
-        bbar.pageSize =nowPageSize;
+		usercountbbar.pageSize =nowPageSize;
          usercount.store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         usercount.store.load();
          usercount.store.loadPage(1);//显示第一页
          
      });
@@ -126,7 +125,8 @@ Ext.define("com.test.test1.test13_chart",{
 	       rootVisible : true,
 	       store: Ext.create('Ext.data.TreeStore', {
 		   root : {
-			 text : '根区域',
+			 text : '根地址',
+			 id:-1,
 			 expanded: true
 			
 		  }}),
@@ -139,14 +139,19 @@ Ext.define("com.test.test1.test13_chart",{
 	       }
 	    
 		});
+		var charttitle=Ext.create('Ext.form.field.Display');
+		me.charttitle=charttitle;
 		var chartpanel=Ext.create('Ext.panel.Panel',{
 			flex:1,
-	       height:"100%"
+	       height:"100%",
+	       tbar:Ext.create("Ext.toolbar.Toolbar",{
+	    	   items:[charttitle]
+	       })
 		});
 		chartpanel.on('afterrender',function(){
 			var alarmChart = new Highcharts.Chart({
 				chart : {
-					width:1200,
+					width:600,
 					height:340,
 					type : 'column',
 					renderTo:chartpanel.id
@@ -187,70 +192,46 @@ Ext.define("com.test.test1.test13_chart",{
 			});
 			me.alarmChart = alarmChart;	
 			var series1 = { 
-				name: "total",			
-				color:'#990000'
+				name: "用户数量",			
+				color:'#990000',
+				width:50
 			};
-			var series2 = { 
-				name: "pass",		
-				color:'#CC6633'
-			};
-			var series3 = { 
-				name: "passing",		
-				color:'#FF9900'
-			};
-			var series4 = { 
-			    name: "price",		
-				color:'#0066CC'
-				 
-			};
-			var series5 = { 
-			    name: "a",		
-				color:'#1166CC'
-				 
-			};
-			var series6 = { 
-			    name: "b",		
-				color:'#2266CC'
-				 
-			};
-			var series7= { 
-			    name: "c",		
-				color:'#3366CC'
-				 
-			};
-			var series8 = { 
-			    name: "d",		
-				color:'#4466CC'
-				 
-			};
+		
 			
 			alarmChart.addSeries(series1);
-			alarmChart.addSeries(series2);
-			alarmChart.addSeries(series3);
-			alarmChart.addSeries(series4);
-			alarmChart.addSeries(series5);
-			alarmChart.addSeries(series6);
-			alarmChart.addSeries(series7);
-			alarmChart.addSeries(series8);	
-			me.loadData();
+			
+		    me.loadAddressTree();
 		});
 	    me.items=[addressTree,chartpanel];
+	    me.addressTree=addressTree;
+	
 		me.callParent();
 	},
 	loadAddressTree:function()
 	{
+		var me=this;
 		Ext.Ajax.request( {
-			url : basePath + 'PermissionController/getUserAddr',
+			url : basePath + 'BackUserController/groupUserAddr',
 			success : function(response) {
 				var result = Ext.decode(response.responseText);
-		         var data=result.returnData;
-		         var rootNode = store.getRootNode();
-				 for(i in data)
-				 {
-					 
-					 var node=Ext.data.NodeInterface(data[i]);
+		         var datas=result.returnData;
+		         var rootNode = me.addressTree.getRootNode();
+		          me.addresssinfo={};
+		          if(!frame.util.isNull(datas)&&datas.length!=0)
+		          {
+				    for(var i=0;i<datas.length;i++)
+				    {
+				    	
+					 var data=datas[i];
+					 var node=Ext.data.NodeInterface({
+							text: data.addrname,
+							leaf:true}
+							 );
 					 rootNode.appendChild(node);
-				 }
+					 me.addresssinfo[data.addrname]=data.unum;
+				   }
+				   me.loadData(datas[0].addrname);
+		         }
 
 
 			},
@@ -261,19 +242,25 @@ Ext.define("com.test.test1.test13_chart",{
 		});
 		
 	},
-	loadData:function( addName){
+	loadData:function( addrname){
 		var me = this;
-		var json=[100,20,10,5,15,98,78,99]
 		var chart = me.alarmChart;    //把me.alarmChart赋给charts
+		if(addrname=="根地址")
+		{
+			var total=0;
+			for(var key in me.addresssinfo)
+			{
+				total=total+me.addresssinfo[key];
+			}
+            me.charttitle.setValue("所有区域");
+			chart.series[0].setData(  [total]);
+		}
+		else{
+	        me.charttitle.setValue(addrname);
+			chart.series[0].setData(  [me.addresssinfo[addrname]]);
+		}
+
 		
-		//给柱状图设值
-		chart.series[0].setData([json[0]]);
-		chart.series[1].setData([json[1]]);
-		chart.series[2].setData([json[2]]);
-		chart.series[3].setData([json[3]]);
-	    chart.series[4].setData([json[4]]);
-		chart.series[5].setData([json[5]]);
-		chart.series[6].setData([json[6]]);
-		chart.series[7].setData([json[7]]);
+		
 	}
 });

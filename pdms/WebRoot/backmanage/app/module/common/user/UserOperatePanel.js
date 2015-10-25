@@ -19,23 +19,30 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 	initComponent:function(){
 		var me=this;
         var address = Ext.create('Ext.grid.Panel', {
-        	title:'address',
+        	title:'用户地址',
         	height:'100%',
 			width:'100%',
         	store: Ext.create('Ext.data.Store', {
         	fields : [ 'uname','uaid','uid',{name:'index',type:'int'},'range','addr','x','y','lct'],
 			pageSize : 10,
-			autoLoad : false,
+			autoLoad : true,
 			sorters: [{
                     property: 'index',
                     direction: 'asc'
                }],
             proxy : {
 				type : 'ajax',
-				url : 'DBController/loadUserAddress',
+				url : basePath+'BackUserController/loadUserAddr',
 				//SELECT u.name as uname ,ua.* FROM useraddr ua LEFT JOIN  USER u ON  ua.uid=u.uid WHERE ua.uid=?
 				extraParams : {
-					userId : me.record.data.uid
+					condition:Ext.encode([{
+							fieldName:'t.uid',
+							operation:'eq',
+							valueType:'Integer',
+							value:me.record.data.uid
+						}])
+						
+				
 				},
 				reader : {
 					type : 'json',
@@ -72,12 +79,13 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 			 {
 				header : "地址排序",
 				dataIndex : 'index',
-				width : 80
+				width : 80,
+				hidden:true
 			},
 		   {
 				header : "地图位置",
 				dataIndex : 'range',
-				width : 150
+				width : 250
 			},
 			{
 				header : "详细地址",
@@ -87,12 +95,12 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 			{
 				header : "经度",
 				dataIndex : 'x',
-				width : 70
+				width : 85
 			},
 				{
 				header : "纬度",
 				dataIndex : 'y',
-				width : 70
+				width : 85
 			},
 			{
 				header : "最后修改记录的时间",
@@ -115,9 +123,8 @@ Ext.define("com.module.common.user.UserOperatePanel",{
       });
        pageSizeComboaddress.on("select", function (comboBox) {
 		var nowPageSize= parseInt(comboBox.getValue());
-        bbar.pageSize =nowPageSize;
+		addressbbar.pageSize =nowPageSize;
          address.store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         address.store.load();
          address.store.loadPage(1);//显示第一页
          
      });
@@ -136,7 +143,7 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 		address.addDocked(addressbbar);
 		
 		var saves = Ext.create('Ext.grid.Panel', {
-        	title:'saves',
+        	title:'用户收藏',
         	hidden:true,
         	height:'100%',
 			width:'100%',
@@ -150,10 +157,17 @@ Ext.define("com.module.common.user.UserOperatePanel",{
                }],
             proxy : {
 				type : 'ajax',
-				url : 'DBController/loadUserSave',
+				url : basePath+'BackUserController/loadUserSave',
 		      //SELECT u.name AS uname ,d.name AS dname ,us.* FROM usersave us INNER JOIN  USER u ON  us.uid=u.uid LEFT JOIN  doctor d ON  us.did=d.did  WHERE us.uid=?
 				extraParams : {
-					userId : me.record.data.uid
+					condition:Ext.encode([{
+							fieldName:'t.uid',
+							operation:'eq',
+							valueType:'Integer',
+							value:me.record.data.uid
+						}])
+						
+				
 				},
 				reader : {
 					type : 'json',
@@ -171,22 +185,22 @@ Ext.define("com.module.common.user.UserOperatePanel",{
         	columns : [  {
 			xtype : 'rownumberer'
 			}, {
-				header : "uname",
+				header : "用户姓名",
 				dataIndex : 'uname',
 				width : 100
 			},
 			 {
-				header : "dname",
+				header : "医生姓名",
 				dataIndex : 'dname',
 				width : 100
 			},
 			 {
-				header : "uid",
+				header : "用户ID",
 				dataIndex : 'uid',
 				width : 80
 			},
 			 {
-				header : "did",
+				header : "医生ID",
 				dataIndex : 'did',
 				width : 80
 			},
@@ -211,9 +225,8 @@ Ext.define("com.module.common.user.UserOperatePanel",{
       });
        pageSizeCombosaves.on("select", function (comboBox) {
 		var nowPageSize= parseInt(comboBox.getValue());
-        bbar.pageSize =nowPageSize;
+		savesbbar.pageSize =nowPageSize;
          saves.store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         saves.store.load();
          saves.store.loadPage(1);//显示第一页
          
      });
@@ -232,7 +245,7 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 		saves.addDocked(savesbbar);
 		
 		  var money = Ext.create('Ext.grid.Panel', {
-        	title:'money',
+        	title:'用户代金劵',
         	hidden:true,
         	height:'100%',
 			width:'100%',
@@ -246,11 +259,19 @@ Ext.define("com.module.common.user.UserOperatePanel",{
                }],
             proxy : {
 				type : 'ajax',
-				url : 'DBController/loadUserVoucher',
+				url : basePath+'BackUserController/loadUserVoucher',
 				//SELECT  u.name AS uname,mp.* FROM monypaper mp,USER u WHERE mp.uid=u.uid  AND mp.uid=?
 				extraParams : {
-					userId : me.record.data.uid
+					condition:Ext.encode([{
+							fieldName:'t.uid',
+							operation:'eq',
+							valueType:'Integer',
+							value:me.record.data.uid
+						}])
+						
+				
 				},
+			
 				reader : {
 					type : 'json',
 					root : 'returnData'
@@ -267,25 +288,25 @@ Ext.define("com.module.common.user.UserOperatePanel",{
         	columns : [  {
 			xtype : 'rownumberer'
 			},  {
-				header : "uname",
+				header : "用户姓名",
 				dataIndex : 'uname',
 				width : 100
 			},
 			 {
-				header : "mpid",
+				header : "代金劵ID",
 				dataIndex : 'mpid',
 				width : 70
 			},
 			 {
-				header : "uid",
+				header : "用户ID",
 				dataIndex : 'uid',
 				hidden:true,
 				width : 70
 			},
 			 {
-				header : "money",
+				header : "代金券金额",
 				dataIndex : 'money',
-				width : 80
+				width : 85
 			},
 			{
 				header : "获取时间",
@@ -318,9 +339,8 @@ Ext.define("com.module.common.user.UserOperatePanel",{
       });
        pageSizeCombomoney.on("select", function (comboBox) {
 		var nowPageSize= parseInt(comboBox.getValue());
-        bbar.pageSize =nowPageSize;
+		moneybbar.pageSize =nowPageSize;
          money.store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         money.store.load();
          money.store.loadPage(1);//显示第一页
          
      });
@@ -339,7 +359,7 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 		money.addDocked(moneybbar);
 		
 		 var unMoney = Ext.create('Ext.grid.Panel', {
-        	title:'unMoney',
+        	title:'无效代金券',
         	hidden:true,
         	hidden:true,
         	height:'100%',
@@ -354,10 +374,17 @@ Ext.define("com.module.common.user.UserOperatePanel",{
              }],
             proxy : {
 				type : 'ajax',
-				url : 'DBController/loadUserUnVoucher',
+				url : basePath+'BackUserController/loadUserUnVoucher',
 				//SELECT  u.name AS uname,mp.* FROM mpashcan mp,USER u WHERE mp.uid=u.uid  AND mp.uid=?
 				extraParams : {
-					userId : me.record.data.uid
+					condition:Ext.encode([{
+							fieldName:'t.uid',
+							operation:'eq',
+							valueType:'Integer',
+							value:me.record.data.uid
+						}])
+						
+				
 				},
 				reader : {
 					type : 'json',
@@ -374,30 +401,30 @@ Ext.define("com.module.common.user.UserOperatePanel",{
         	columns : [  {
 			xtype : 'rownumberer'
 			},  {
-				header : "uname",
+				header : "用户姓名",
 				dataIndex : 'uname',
 				width : 100
 			},
 			 {
-				header : "mpid",
+				header : "代金券ID",
 				dataIndex : 'mpid',
-				width : 70
+				width : 80
 			},
 			 {
-				header : "uid",
+				header : "用户ID",
 				dataIndex : 'uid',
 				hidden:true,
 				width : 70
 			},
 			 {
-				header : "money",
+				header : "代金券金额",
 				dataIndex : 'money',
-				width : 80
+				width : 85
 			},
 			{
-				header : "状态",
+				header : "代金券状态",
 				dataIndex : 'status',
-				width : 80,
+				width : 85,
 				renderer:function(value)
 				{
 					if(value==0)
@@ -440,9 +467,8 @@ Ext.define("com.module.common.user.UserOperatePanel",{
       });
        pageSizeCombounMoney.on("select", function (comboBox) {
 		var nowPageSize= parseInt(comboBox.getValue());
-        bbar.pageSize =nowPageSize;
+		 unMoneybbar.pageSize =nowPageSize;
          unMoney.store.pageSize =nowPageSize;//设置store的pageSize，可以将工具栏与搜索的数据同步。
-         unMoney.store.load();
          unMoney.store.loadPage(1);//显示第一页
          
      });
@@ -490,20 +516,20 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 			 expanded: true,
 			children:[{
 			  id:'address',
-			  text:'address',
+			  text:'用户地址',
 			  leaf:true
 			},{
 			  id:'saves',
-			  text:'saves',
+			  text:'用户收藏',
 			  leaf:true
 			},{
 			  id:'money',
-			  text:'money',
+			  text:'用户代金卷',
 			  leaf:true
 			},
 			{
 			  id:'unMoney',
-			  text:'unMoney',
+			  text:'无效代金卷',
 			  leaf:true
 			}]
 		  }}),

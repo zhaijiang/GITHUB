@@ -8,7 +8,7 @@ frame.registerModule({
 		    className : 'com.module.common.user.UserPanel'
 		 },
 		 {
-			    text : "用户管理",
+			    text : "用户统计",
 			    className : 'com.module.common.user.UserStatisticPanel'
 			 }]}
 		

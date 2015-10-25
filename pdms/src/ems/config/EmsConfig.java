@@ -38,7 +38,10 @@ import ems.interceptor.ExceptionAndLogInterceptor;
 import ems.model.Ddmap;
 import ems.model.Doctor;
 import ems.model.Globals;
+import ems.model.Monypaper;
+import ems.model.Mpashcan;
 import ems.model.Orders;
+import ems.model.Otrace;
 import ems.model.Sysoper;
 import ems.model.User;
 import ems.model.Useraddr;
@@ -101,7 +104,12 @@ public class EmsConfig extends JFinalConfig
         arp.addMapping("sysoper",Sysoper.class);
         arp.addMapping("globals",Globals.class);
         arp.addMapping("ddmap",Ddmap.class);
-        arp.addMapping("Useraddr",Useraddr.class);
+        arp.addMapping("useraddr",Useraddr.class);
+        arp.addMapping("otrace",Otrace.class);
+        arp.addMapping("monypaper",Monypaper.class);
+        arp.addMapping("mpashcan",Mpashcan.class);
+      
+        
     }
    
     /**
