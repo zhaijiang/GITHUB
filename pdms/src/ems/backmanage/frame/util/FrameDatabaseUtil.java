@@ -65,7 +65,7 @@ public class FrameDatabaseUtil {
 		List<Object> values =new ArrayList<Object>();
 		Map<String, Object> result = new HashMap<String, Object>();
 
-		hql = getHqlJdbc(hql, conditions, values, "and");
+		hql = getSql(hql, conditions, values, "and");
 		if (limit != null && start != null) {
 			int pageNumber = start / limit + 1;
 			
@@ -75,35 +75,78 @@ public class FrameDatabaseUtil {
 			result.put("total", pg.getTotalRow());
 			result.put("datas", pg.getList());
 		} else {
-			List<Object> datas = Db.query(hql,values.toArray());
+			List<Record> datas = Db.find(hql,values.toArray());
 			result.put("datas", datas);
 
 		}
 		return result;
 	}
-	public static String getHqlJdbc(String hql, List<QueryCondition> conditions,
-			List<Object> values, String connect) {
-		if (!hql.toLowerCase().contains("where")) {
-			hql = hql + " where ";
+	
+	public static Map<String, Object> queryByPage(String hql, Integer start, Integer limit,Object... values) {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		if (limit != null && start != null) {
+			int pageNumber = start / limit + 1;
+			
+			Page<Record> pg = Db.paginate(pageNumber, limit,
+					hql.substring(0, hql.indexOf("from")),
+					hql.substring(hql.indexOf("from")),values);
+			result.put("total", pg.getTotalRow());
+			result.put("datas", pg.getList());
 		} else {
-			if (!hql.toLowerCase().trim().endsWith("and")) {
-				hql = hql + " and ";
+			List<Record> datas = Db.find(hql,values);
+			result.put("datas", datas);
+
+		}
+		return result;
+	}
+	/**
+	 * 根据条件 获取SQL 片段
+	 * @param conditions
+	 * @return
+	 */
+	public static Map<String, Object> getSqlPart(List<QueryCondition> conditions) {
+		String sql="";
+		List values=new ArrayList<Object>();
+		 sql = getSql(sql,conditions, values,"and").trim();
+		 Map<String,Object> result=new HashMap<String, Object>();
+		 result.put("sql", sql);
+		 result.put("values", values);
+		 return result;
+	}
+	/**
+	 * 获取 整体SQL
+	 * @param sql 基础SQL 
+	 * @param conditions 条件
+	 * @param values 值
+	 * @param connect 连接符 and /or
+	 * @return
+	 */
+	public static String getSql(String sql, List<QueryCondition> conditions,
+			List<Object> values, String connect) {
+		if (!sql.toLowerCase().contains("where")) {
+			sql = sql + " where ";
+		} else {
+			if (!sql.toLowerCase().trim().endsWith("and")) {
+				sql = sql + " and ";
 			}
 		}
+		StringBuffer  tail=new StringBuffer("");
 
-		hql = getHqlJdbc2(hql, conditions, values, connect).trim();
-		if (hql.endsWith("and")) {
-			hql = hql.substring(0, hql.lastIndexOf("and"));
+		sql = getSql2(sql, conditions, values, connect,tail).trim();
+		if (sql.endsWith("and")) {
+			sql = sql.substring(0, sql.lastIndexOf("and"));
 		}
-		if (hql.endsWith("or")) {
-			hql = hql.substring(0, hql.lastIndexOf("or"));
+		if (sql.endsWith("or")) {
+			sql = sql.substring(0, sql.lastIndexOf("or"));
 
 		}
-		return hql;
+		return sql+tail.toString();
 	}
 	@SuppressWarnings("unchecked")
-	private static String getHqlJdbc2(String hql, List<QueryCondition> conditions,
-			List<Object>values, String connect) {
+	private static String getSql2(String hql, List<QueryCondition> conditions,
+			List<Object>values, String connect, StringBuffer tail) {
 		if (conditions != null && conditions.size() != 0) {
 
 			connect = " " + connect + " ";
@@ -208,12 +251,23 @@ public class FrameDatabaseUtil {
 
 						cons.add(con);
 					}
-					hql = getHqlJdbc2(hql + " ( ", cons, values, "or");
+					hql = getSql2(hql + " ( ", cons, values, "or",tail);
 					if (hql.endsWith("or ")) {
 						hql = hql.substring(0, hql.lastIndexOf("or "))
 								+ " ) and ";
 
 					}
+
+				}
+				
+				if ("orderby".equalsIgnoreCase(operation)) {
+
+					tail.append(" ");
+					tail.append("order by ");
+					tail.append(fieldName);
+					tail.append(" ");
+					tail.append(value==null?"asc":value);
+					tail.append(" ");
 
 				}
 
@@ -244,6 +298,7 @@ public class FrameDatabaseUtil {
 		return hql;
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	private static String getHql2(String hql, List<QueryCondition> conditions,
 			Map<String, Object> values, String connect) {
@@ -369,8 +424,12 @@ public class FrameDatabaseUtil {
 	public static Object getValueByValueType(QueryCondition condition) {
 		String valueType = condition.getValueType();
 		Object value = condition.getValue();
-		if ("or".equalsIgnoreCase(condition.getOperation())) {
+		if ("or".equalsIgnoreCase(condition.getOperation())||"orderby".equalsIgnoreCase(condition.getOperation())) {
 			return value;
+		}
+		if(valueType==null)
+		{
+			return value==null?null:value.toString();
 		}
 		if (valueType.contains("[") || valueType.contains("]")) {
 			if (valueType.toLowerCase().contains("Integer".toLowerCase())) {

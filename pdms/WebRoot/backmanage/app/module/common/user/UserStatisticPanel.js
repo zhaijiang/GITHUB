@@ -89,7 +89,7 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
 
 		});
 		usercount.addDocked(usercountbbar);
-		var chart=Ext.create('com.test.test1.test13_chart',{
+		var chart=Ext.create('com.module.common.user.UserStatisticPanel_Chart',{
 		 flex:1,
 		 width:'100%'
 		});
@@ -112,7 +112,7 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
 
 
 
-Ext.define("com.test.test1.test13_chart",{
+Ext.define("com.module.common.user.UserStatisticPanel_Chart",{
 	extend:'Ext.panel.Panel',
 	layout:'hbox',
 	border : true,

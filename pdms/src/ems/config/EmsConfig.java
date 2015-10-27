@@ -26,6 +26,7 @@ import com.jfinal.render.ViewType;
 
 import ems.backmanage.controller.BackDoctorController;
 import ems.backmanage.controller.BackManageController;
+import ems.backmanage.controller.BackOrdersController;
 import ems.backmanage.controller.BackUserController;
 import ems.comm.JFinalInitialization;
 import ems.controller.DoctorController;
@@ -82,6 +83,10 @@ public class EmsConfig extends JFinalConfig
         
         //用户后台接口
         me.add("BackUserController",BackUserController.class);
+        
+        
+        //用户后台接口
+        me.add("BackOrdersController",BackOrdersController.class);
     }
 
     /**
