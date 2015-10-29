@@ -33,6 +33,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 					        listeners:{
 					        	change:function( field,  newValue,  oldValue)
 					        	{
+					        		alert("a");
 					        		month.hide();
 					        		jidu.hide();
 					        		month.setDisabled(true);
@@ -66,12 +67,27 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 				fields : [ 'name', 'value' ],
 				data : [ [ '2015', 2015 ], [ '2016', 2016 ], [ '2017', 2017 ],[ '2018', 2018 ], [ '2019', 2019 ], [ '2020', 2020 ] ]
 
-			})					
+			}),
+			listeners:{
+				select:function(combo,records)
+				{
+					month.setDisabled(false);  
+					jidu.setDisabled(false);  
+				}
+			}
 
 		});
+		var monthjidu={
+		    '1':1,'2':1,'3':1,
+			'4':2,'5':2,'6':2,
+			'7':3,'8':3,'9':3,
+			'10':4,'11':4,'12':4
+		}
 		var month = Ext.create('Ext.form.field.ComboBox', {
 			fieldLabel : "月",
-			allowBlank:false,
+			allowBlank:true,
+			hidden:false,
+			disabled:true,
 			name : 'month',
 			labelWidth:30,
 			displayField : 'name',
@@ -89,15 +105,22 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 		
 				]
 
-			})					
+			}),
+			listeners:{
+				select:function(combo,records)
+				{
+					var mon=records[0].data.value;
+					jidu.setValue(monthjidu[mon+""]);
+				}
+			}					
 
 		});
 		var jidu = Ext.create('Ext.form.field.ComboBox', {
 			fieldLabel : "季度",
-			allowBlank:false,
+			allowBlank:true,
 			name : 'jidu',
 			disabled:true,
-			hidden:true,
+			disabled:true,
 			labelWidth:40,
 			displayField : 'name',
 			valueField : 'value',
@@ -107,12 +130,21 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 				fields : [ 'name', 'value' ],
 				data : [ [ '第一季度', 1 ], [ '第二季度', 2 ], [ '第三季度', 3 ],[ '第三季度', 4 ]]
 	
-			})});	
+			}),
+			listeners:{
+				select:function(combo,records)
+				{
+					month.reset();
+					
+				}
+			}
+			
+			});	
 		    me.year=year;
 		    me.jidu=jidu;
 		    me.month=month;
 			var num=Ext.create('Ext.form.FieldContainer',{
-			 width:280,
+			 width:450,
 			 layout:'hbox',
 			 defaults:{
 			 	width:135,
@@ -120,7 +152,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 			 },
 			 items:[year,jidu,month]
 			})
-						me.items = [ymd,num,
+						me.items = [num,
 					
 						{
 							xtype : 'button',
@@ -142,6 +174,8 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 							handler : function() {
 
 								me.getForm().reset();
+								month.setDisabled(true);  
+					            jidu.setDisabled(true);  
 							}
 						}
 
@@ -153,42 +187,52 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 					},
 					getQueryCondition : function() {
 						var formpanel = this;
+						var condition = [];
 						if(!formpanel.isValid())
 	                      {
-	                            return;
+	                            return condition;
 	                      }
 						var values = formpanel.getForm().getValues();
 						var happenTimeStart = null;
 						var happenTimeEnd = null;
-						var yjm=values.yjm;
-						if(yjm=='year')
+					
+						var yearnum=formpanel.year.getValue();
+						var jidunum=formpanel.jidu.getValue();
+					     var monthnum=formpanel.month.getValue();
+						if(!frame.util.isNull(monthnum))
 						{
+							// 按月
 							 var yearnum=formpanel.year.getValue();
-							 happenTimeStart=yearnum+"-01-01 00:00:00"
-							 happenTimeEnd=yearnum+"-12-31 23:59:59"
+							 var monthnum=formpanel.month.getValue();
+							 happenTimeStart=yearnum+"-"+monthnum+"-01 00:00:00"
+							 happenTimeEnd=yearnum+"-"+monthnum+"-31 23:59:59"
+							 
+							
 							
 							
 						}
-						else if(yjm=='jidu')
+						else if(!frame.util.isNull(jidunum))
 						{
 							 var yearnum=formpanel.year.getValue();
 							 var jidunum=formpanel.jidu.getValue();
 							 happenTimeStart=yearnum+"-"+((jidunum-1)*3+1)+"-01 00:00:00"
 							 happenTimeEnd=yearnum+"-"+((jidunum-1)*3+1+2)+"-31 23:59:59"
 						}
-						else{
+						else if(!frame.util.isNull(yearnum)){
 							 var yearnum=formpanel.year.getValue();
-							 var month=formpanel.month.getValue();
-							 happenTimeStart=yearnum+"-"+month+"-01 00:00:00"
-							 happenTimeEnd=yearnum+"-"+month+"-31 23:59:59"
+							 happenTimeStart=yearnum+"-01-01 00:00:00"
+							 happenTimeEnd=yearnum+"-12-31 23:59:59"
+						}
+						else{
+							return condition;
 						}
 						
-						var condition = [];
+				
 						
 						if (!frame.util.isNull(happenTimeStart)
 								&& frame.util.isNull(happenTimeEnd)) {
 							condition.push({
-								fieldName : 't.time',
+								fieldName : 't.createtime',
 								operation : 'ge',
 								valueType:'Date',
 								value : happenTimeStart
@@ -196,7 +240,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 						} else if (!frame.util.isNull(happenTimeEnd)
 								&& frame.util.isNull(happenTimeStart)) {
 							condition.push({
-								fieldName : 't.time',
+								fieldName : 't.createtime',
 								operation : 'le',
 								valueType:'Date',
 								value : happenTimeEnd
@@ -208,7 +252,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 										.showMsg(frame.lang.global.startTimeLessThanEndTime);
 							}
 							condition.push({
-								fieldName : 't.time',
+								fieldName : 't.createtime',
 								valueType:'[Date]',
 								operation : 'between',
 								value : [ happenTimeStart, happenTimeEnd ]
@@ -220,7 +264,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 
 });
 
-Ext.define("com.test.test1.test12_result",{
+Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 	extend:'Ext.panel.Panel',
 	alias : 'widget.OrdersStatisticPanel_Result',
 	border : true,
@@ -228,6 +272,7 @@ Ext.define("com.test.test1.test12_result",{
 	autoScroll:true,
 	initComponent:function(){
 		var me=this;
+		  me.callParent();
         var orders = Ext.create('Ext.grid.Panel', {
         	title:'orders',
         	height:'100%',
@@ -236,12 +281,8 @@ Ext.define("com.test.test1.test12_result",{
            fields: ['oid','uid','did', 'dlvl', 'status', 'record', 'record_pic', 'createtime', 'evaltime1',
             'reevaltime1', 'evaltime2', 'reevaltime2', 'eval1', 'reeval1', 'eval2', 'reeval2', 
             'espeed', 'eattitude', 'erecord', 'eeffect', 'esupport', 
-            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','uphone','range','addr','totaladdr'],			pageSize : 10,
+            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','dphone','uname','uphone','range','addr','totaladdr'],			pageSize : 10,
 			autoLoad : false,
-			sorters: [{
-                    property: 'index',
-                    direction: 'asc'
-               }],
             listeners: {
                 'beforeload': function(store) {
                     var formPanel = me.searchcon;
@@ -267,6 +308,15 @@ Ext.define("com.test.test1.test12_result",{
 			}
 		
 		}),
+		  listeners:{
+		  	
+                'itemdblclick':function(grid,record)
+                {
+                	     Ext.create('com.module.common.orders.OrdersOperatePanel', {
+                              record: record
+                          }).show()
+                }
+		  },
        		selModel: Ext.create('Ext.selection.CheckboxModel',
 		   { 		
 			  mode : "MULTI"
@@ -284,6 +334,18 @@ Ext.define("com.test.test1.test12_result",{
     {
         header: 'dname',
         dataIndex: 'dname',
+        width: 75,
+        sortable: true
+    },
+      {
+        header: 'dphone',
+        dataIndex: 'dphone',
+        width: 120,
+        sortable: true
+    },
+     {
+        header: 'uname',
+        dataIndex: 'uname',
         width: 75,
         sortable: true
     },
@@ -471,7 +533,10 @@ Ext.define("com.test.test1.test12_result",{
 
 		});
 		doctor.addDocked(doctorbbar);
-		var total=Ext.create('com.test.test1.test12_chart')
+		var total=Ext.create('com.module.common.orders.OrdersStatisticPanel_Chart',
+			{
+			 resultpanel:me
+			})
 		var statistictable={
 		 'total':total,
 		 'doctor':doctor,
@@ -543,11 +608,9 @@ Ext.define("com.test.test1.test12_result",{
 	    })
 
 	
-	    me.items=[
-	    detailInfo
-	    ];
+	    me.add( detailInfo);
 	    me.detailtable=detailtable;
-	    me.callParent();
+	  
 	    
 
 	},
@@ -578,7 +641,7 @@ Ext.define("com.test.test1.test12_result",{
 	
 });
 
-Ext.define("com.test.test1.test12_chart",{
+Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 	extend:'Ext.panel.Panel',
 	layout:'fit',
 	border : true,
@@ -590,11 +653,12 @@ Ext.define("com.test.test1.test12_chart",{
 	       height:"100%"
 		});
 		chartpanel.on('afterrender',function(){
-			var alarmChart = new Highcharts.Chart({
+			var statisticChart = new Highcharts.Chart({
 				chart : {
 					width:1200,
 					height:340,
 					type : 'column',
+					//margin: [0, 0, 0, 0],
 					renderTo:chartpanel.id
 				},
 				title: { text: "统计报表" }, 
@@ -620,6 +684,7 @@ Ext.define("com.test.test1.test12_chart",{
 	       		 }, 
 				plotOptions: { 
 					column: { 
+						pointWidth: 50,
 						dataLabels:{
 							enabled:true 
 						},
@@ -631,7 +696,7 @@ Ext.define("com.test.test1.test12_chart",{
                     enabled: false
                 }
 			});
-			me.alarmChart = alarmChart;	
+			me.statisticChart = statisticChart;	
 			var series1 = { 
 				name: "dd总数",			
 				color:'#990000'
@@ -651,31 +716,48 @@ Ext.define("com.test.test1.test12_chart",{
 			};
 		
 			
-			alarmChart.addSeries(series1);
-			alarmChart.addSeries(series2);
-			alarmChart.addSeries(series3);
-			alarmChart.addSeries(series4);
+			statisticChart.addSeries(series1);
+			statisticChart.addSeries(series2);
+			statisticChart.addSeries(series3);
+			statisticChart.addSeries(series4);
 	
-			me.loadData();
+			me.load();
 		});
 	    me.items=[chartpanel];
 		me.callParent();
 	},
 	load:function()
 	{
+		var me=this;
+		var condition=[];
+		if(!frame.util.isNull(me.resultpanel.searchcon))
+		{
+			condition=me.resultpanel.searchcon.getQueryCondition();
+		}
 		Ext.Ajax.request( {
-			url : basePath + 'PermissionController/getUserAddr',
+			url : basePath + 'BackOrdersController/statisticOrders',
+			params:{
+			  condition:Ext.encode(condition)
+			},
 			success : function(response) {
-				var result = Ext.decode(response.responseText);
-		         var data=result.returnData;
-		         var rootNode = store.getRootNode();
-				 for(i in data)
+				 var result = Ext.decode(response.responseText);
+				 if(result.success)
 				 {
-					 
-					 var node=Ext.data.NodeInterface(data[i]);
-					 rootNode.appendChild(node);
+				 var datas=result.returnData;
+				  if(frame.util.isNull(datas))
+				  {
+				  	return;
+				  }
+		         var totalorders=datas.totalorders;
+		         var orderstotalprice=datas.orderstotalprice;
+		         var doctotalincome=datas.doctotalincome;
+		         var systotalincome=datas.systotalincome;
+		          var chart = me.statisticChart;    
+		           chart.series[0].setData([frame.util.isNull(totalorders)?0:totalorders]);
+		           chart.series[1].setData([frame.util.isNull(orderstotalprice)?0:orderstotalprice]);
+		           chart.series[2].setData([frame.util.isNull(doctotalincome)?0:doctotalincome]);
+		           chart.series[3].setData([frame.util.isNull(systotalincome)?0:systotalincome]);
 				 }
-
 
 			},
 			failure : function(response, options) {
@@ -688,7 +770,7 @@ Ext.define("com.test.test1.test12_chart",{
 	loadData:function( addName){
 		var me = this;
 		var json=[100,20,10,5,15,98,78,99]
-		var chart = me.alarmChart;    
+		var chart = me.statisticChart;    
 		chart.series[0].setData([json[0]]);
 		chart.series[1].setData([json[1]]);
 		chart.series[2].setData([json[2]]);

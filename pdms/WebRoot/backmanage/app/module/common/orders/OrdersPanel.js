@@ -102,6 +102,18 @@ Ext.define("com.module.common.orders.OrdersPanel_Grid", {
         width: 75,
         sortable: true
     },
+      {
+        header: 'dphone',
+        dataIndex: 'dphone',
+        width: 120,
+        sortable: true
+    },
+     {
+        header: 'uname',
+        dataIndex: 'uname',
+        width: 75,
+        sortable: true
+    },
     {
         header: 'uphone',
         dataIndex: 'uphone',
@@ -154,7 +166,7 @@ Ext.define("com.module.common.orders.OrdersPanel_Grid", {
             fields: ['oid','uid','did', 'dlvl', 'status', 'record', 'record_pic', 'createtime', 'evaltime1',
             'reevaltime1', 'evaltime2', 'reevaltime2', 'eval1', 'reeval1', 'eval2', 'reeval2', 
             'espeed', 'eattitude', 'erecord', 'eeffect', 'esupport', 
-            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','uphone','range','addr','totaladdr'],
+            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','dphone','uname','uphone','range','addr','totaladdr'],
             autoLoad: true,
             pageSize: frame.config.pageSize,
             proxy: {
@@ -245,7 +257,6 @@ Ext.define("com.module.common.orders.OrdersPanel_Grid", {
         }
         
         Ext.widget('OrdersOperatePanel', {
-            title: frame.lang.global._look,
             record: rec,
             showMode: 'look'
         }).show()

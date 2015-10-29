@@ -2,6 +2,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 				{
 					extend : 'Ext.window.Window',
 					alias : 'widget.DoctorOperatePanel',
+					title:'Doctor Detail',
 					width : 1000,
 					constrain : true,
 					modal : true,
@@ -372,7 +373,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 
 								}
 							}, _cancelBtn ];
-							formpanel.getForm().loadRecord(me.record);
+							//formpanel.getForm().loadRecord(me.record);
 						} else if (me.showMode == 'modify') {
 							cfg.buttons = [ {
 								xtype : 'button',
@@ -385,7 +386,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 
 								}
 							}, _cancelBtn ];
-							formpanel.getForm().loadRecord(me.record);
+							//formpanel.getForm().loadRecord(me.record);
 						} else {
 							cfg.buttons = [ _cancelBtn ];
 							formpanel.getForm().loadRecord(me.record);
@@ -395,7 +396,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 								item.readOnly = true;
 							});
 						}
-						  photo.setSrc(basePath+me.record.data.photo);
+						 me.photo=photo;
 						Ext.apply(me, cfg);
 						me.formpanel = formpanel;
 						me.callParent();
@@ -435,6 +436,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 														//.operateSuccess(response);
 												
 												me.doctorpic=result.doctorpic;
+												me.photo.setSrc(basePath+result.doctorinfo.photo);
 												me.formpanel.getForm().setValues(result.doctorinfo);
 											} else {
 												//frame.util.QuickMsg

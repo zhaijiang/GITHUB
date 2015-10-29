@@ -9,6 +9,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 	alias: 'widget.OrdersOperatePanel',
 	width: 1000,
 	constrain: true,
+	title:'Orders Detail',
 	modal: true,
 	height: 600,
 	layout: 'vbox',
@@ -60,21 +61,30 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			},{
 			  xtype:'button',
 			  width:60,
-			  text:'图',
+			  text:'!',
 			  handler:function()
 			  {
-			  	Ext.create('Ext.window.Window',{
-			    title:'doc',
-			      autoScroll:true,
-			  	did:me.record.data.did,
-			  	width:200,
-			  	height:200
+			  		var record={
+		 	     data:{did:me.record.data.did},
+			  	  getData:function()
+			  	  {
+			  	  	return this.data;
+			  	  }
+			  	}
+			  	
+			  	Ext.create('com.module.common.doctor.DoctorOperatePanel',{
+			      record:record
 			  	
 			  	}
 			  	).show();
 			  }
 			}]
 			},
+			{
+				xtype: 'textfield',
+				fieldLabel: 'dphone',
+				name: 'dphone'
+			}, 
 				{
 			xtype:'fieldcontainer',
 			layout:'hbox',
@@ -82,26 +92,36 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			{
 				xtype: 'textfield',
 				labelWidth: 110,
-				fieldLabel: 'uphone',
-				name: 'uphone'
+				fieldLabel: 'uname',
+				name: 'uname'
 			},{
 			  xtype:'button',
 			  width:60,
-			  text:'图',
+			  text:'!',
 			   handler:function()
 			  {
-			  	Ext.create('Ext.window.Window',{
-			    title:'user',
-			    autoScroll:true,
-			  	did:me.record.data.did,
-			  	width:200,
-			  	height:200
+			  	var record={
+			  	data:{uid:me.record.data.uid},
+			  	
+			  	  getData:function()
+			  	  {
+			  	   return this.data;
+			  	  }
+			  	}
+			  	
+			  	Ext.create('com.module.common.user.UserOperatePanel',{
+			      record:record
 			  	
 			  	}
 			  	).show();
 			  }
 			}]
 			},
+			{
+				xtype: 'textfield',
+				fieldLabel: 'uphone',
+				name: 'uphone'
+			}, 
 			 {
 				xtype: 'textfield',
 				fieldLabel: 'dlvl',
@@ -142,7 +162,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			  	Ext.create('Ext.window.Window',{
 			    title:'pic',
 			  	width:500,
-			  	  autoScroll:true,
+			  	autoScroll:true,
 			  	height:500,
 			  	items:[{
 			  	 xtype:'image',

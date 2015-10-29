@@ -1,10 +1,11 @@
 
 Ext.define("com.module.common.user.UserOperatePanel",{
 	extend:'Ext.window.Window',
+	title:'User Detail',
 	constrain : true,
 	border : true,
 	modal : true,
-	height:500,
+	height:600,
 	width:1000,
 	layout:'vbox',
 	buttonAlign : 'center',

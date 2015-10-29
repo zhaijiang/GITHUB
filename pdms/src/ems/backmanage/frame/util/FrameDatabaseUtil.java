@@ -110,6 +110,7 @@ public class FrameDatabaseUtil {
 		String sql="";
 		List values=new ArrayList<Object>();
 		 sql = getSql(sql,conditions, values,"and").trim();
+		 sql=sql.replace("where", "");
 		 Map<String,Object> result=new HashMap<String, Object>();
 		 result.put("sql", sql);
 		 result.put("values", values);
@@ -205,8 +206,8 @@ public class FrameDatabaseUtil {
 				if ("between".equalsIgnoreCase(operation)) {
 					{
 						List<?> vals = (List<?>) value;
-						hql = hql + fieldName + " between " + "?"
-								+ "1" + "?" + "2";
+						hql = hql + "("+fieldName + " between " + "?"
+								+ " and " + "? )" + connect;
 						values.add(vals.get(0));
 						values.add( vals.get(1));
 					}

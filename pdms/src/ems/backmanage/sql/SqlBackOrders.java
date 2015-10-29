@@ -3,7 +3,7 @@ package ems.backmanage.sql;
 public class SqlBackOrders {
 
  public final static String loadOrders=
-	 "SELECT d.name AS dname, u.phone AS uphone,ad.range,ad.addr, t.* from orders t  LEFT JOIN user  u ON t.uid=u.uid LEFT JOIN  doctor d ON t.did=d.did " +
+	 "SELECT d.name AS dname,d.phone as dphone,u.name as uname, u.phone AS uphone,ad.range,ad.addr, t.* from orders t  LEFT JOIN user  u ON t.uid=u.uid LEFT JOIN  doctor d ON t.did=d.did " +
 	 "LEFT  JOIN useraddr ad ON u.uaid=ad.uaid where 1=1 ";
  public final static String countOrders=
 	 "SELECT count(*) as total from orders t WHERE 1=1";
@@ -25,7 +25,7 @@ public class SqlBackOrders {
  //
  //SELECT COUNT(*) from orders  t WHERE 1=1 
  public final static String  countOrdersTotalPrice=
-	"SELECT SUM(o.price) as totalprice from orders  o,otrace t  WHERE  o.oid=t.oid AND  t.status=11";
+	"SELECT SUM(o.price) as totalprice from orders  o,otrace ot  WHERE  o.oid=ot.oid AND  ot.status=11";
 
 
 }
