@@ -1,5 +1,6 @@
 package ems.backmanage.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +96,22 @@ public class BackUserController extends BaseController {
 		 try {
 			  
 		
-			    
+			 String condition = getPara("condition");
+			 Integer start=getPara("start")==null?null:Integer.parseInt(  getPara("start"));
+			Integer limit= getPara("limit")==null?null:Integer.parseInt(  getPara("limit"));
+			 QueryCondition[] conditions = {};
+				if (condition != null) {
+					conditions = FrameJsonUtil.getObjectMapper().readValue(
+							condition, QueryCondition[].class);
+				}
+				
+				Map<String, Object> result = FrameDatabaseUtil
+						.queryByCondition(SqlBackUser.statisticUserVoucher,
+								Arrays.asList(conditions), start, limit);
+				setAttr("returnData",result.get("datas"));
+				setAttr("total",result.get("total"));
+				setAttr("success",true);
+				renderJson(); 
 			   
 			    setAttr("success",true);
 			  

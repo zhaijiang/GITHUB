@@ -56,11 +56,12 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			{
 				xtype: 'textfield',
 				labelWidth: 110,
+				width:290,
 				fieldLabel: 'dname',
 				name: 'dname'
 			},{
 			  xtype:'button',
-			  width:60,
+			  width:30,
 			  text:'!',
 			  handler:function()
 			  {
@@ -92,11 +93,12 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			{
 				xtype: 'textfield',
 				labelWidth: 110,
+				width:290,
 				fieldLabel: 'uname',
 				name: 'uname'
 			},{
 			  xtype:'button',
-			  width:60,
+			  width:30,
 			  text:'!',
 			   handler:function()
 			  {
@@ -151,11 +153,12 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 				xtype: 'textfield',
 				fieldLabel: 'record',
 				labelWidth: 110,
+				width:290,
 				name: 'record'
 			},{
 			  xtype:'button',
-			  width:60,
-			  text:'图',
+			  width:30,
+			  text:'!',
 			  
 			  handler:function()
 			  {

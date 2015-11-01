@@ -356,8 +356,9 @@ Ext
 							return;
 						}
 						Ext.create('com.module.common.user.UserOperatePanel', {
-							title : frame.lang.global._look,
-							record : rec
+		
+							record : rec,
+							showMode : 'look'
 						}).show();
 					}
 					

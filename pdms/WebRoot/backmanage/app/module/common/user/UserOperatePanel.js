@@ -1,7 +1,7 @@
 
 Ext.define("com.module.common.user.UserOperatePanel",{
 	extend:'Ext.window.Window',
-	title:'User Detail',
+	title:'用户详细信息',
 	constrain : true,
 	border : true,
 	modal : true,

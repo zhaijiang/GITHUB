@@ -36,7 +36,7 @@ import ems.model.Doctor;
 public class BackDoctorController extends BaseController {
 
 	/**
-	 * 查询医生
+	 * 
 	 */
 	public void loadDoctor()
 	{

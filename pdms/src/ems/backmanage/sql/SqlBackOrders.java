@@ -27,5 +27,6 @@ public class SqlBackOrders {
  public final static String  countOrdersTotalPrice=
 	"SELECT SUM(o.price) as totalprice from orders  o,otrace ot  WHERE  o.oid=ot.oid AND  ot.status=11";
 
-
+ public final static String loadOrdersDetatil=
+ "select t.* from orders  t left join otrace ot on t.oid=ot.oid where 1=1 ";
 }

@@ -143,6 +143,10 @@ public class FrameDatabaseUtil {
 			sql = sql.substring(0, sql.lastIndexOf("or"));
 
 		}
+		if (sql.endsWith("where")) {
+			sql = sql.substring(0, sql.lastIndexOf("where"));
+
+		}
 		return sql+tail.toString();
 	}
 	@SuppressWarnings("unchecked")

@@ -16,6 +16,10 @@ public class SqlBackUser {
 	/**通过条件查询用户过期代金卷*/
 	public  static final String loadUserUnVoucherByCondition="select  u.name AS uname,t.* from mpashcan t,USER u where t.uid=u.uid  ";	
 	/**用户地址分组*/
-	public  static final String groupUserAddr="select t.range as addrname,count(*) as unum from  useraddr t group by t.range  order by t.range";	
+	public  static final String groupUserAddr="select t.range as addrname,count(*) as unum from  useraddr t group by t.range  order by t.range";
+	
+	/**统计用户代金卷总额*/
+	public  static final String statisticUserVoucher="select  sum(mp.money) as vouchercount,t.*  from user t left join mpashcan mp on t.uid=mp.uid and  mp.status=0  group  by  t.uid  order by t.uid asc";
+	
 
 }

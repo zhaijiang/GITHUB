@@ -11,16 +11,16 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
         	 width:'100%',
 			 height:300,
         	store: Ext.create('Ext.data.Store', {
-        	    fields : [ 'uname','vouchercount','lct'],
+        	    fields : [ 'uid','name','phone','vouchercount','lct'],
 			    pageSize : 10,
-			    autoLoad : false,
+			    autoLoad : true,
 			    sorters: [{
                     property: 'lct',
                     direction: 'asc'
                   }],
                 proxy : {
 				    type : 'ajax',
-				    url : 'DBController/loadUser',
+				    url : basePath + 'BackUserController/statisticUser',
 				    extraParams : {
 					//userId : me.record.data.uid
 				    },
@@ -39,9 +39,19 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
   
         	columns : [  {
 			xtype : 'rownumberer'
+			}
+        	, {
+				header : "用户ID",
+				dataIndex : 'uid',
+				width : 100
 			}, {
 				header : "用户姓名",
-				dataIndex : 'uname',
+				dataIndex : 'name',
+				width : 100
+			},
+			{
+				header : "用户电话",
+				dataIndex : 'phone',
 				width : 100
 			},
 			 {
@@ -62,7 +72,7 @@ Ext.define("com.module.common.user.UserStatisticPanel",{
      var  pageSizeCombousercount = Ext.create('Ext.form.ComboBox',{
           store: Ext.create('Ext.data.ArrayStore',{
               fields: ['text', 'value'],
-              data: [['10', 10], ['20', 20],['30', 30], ['50', 50],  ['100', 100]]
+              data: [['5', 5],['10', 10], ['20', 20],['30', 30], ['50', 50],  ['100', 100]]
           }),
           valueField: 'value',
           displayField: 'text',
@@ -179,6 +189,7 @@ Ext.define("com.module.common.user.UserStatisticPanel_Chart",{
 	       		 }, 
 				plotOptions: { 
 					column: { 
+						pointWidth: 50,
 						dataLabels:{
 							enabled:true 
 						},

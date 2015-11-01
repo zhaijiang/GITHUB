@@ -1,6 +1,6 @@
-﻿Ext.define('com.module.common.doctor.DoctorPanel_SearhForm', {
+﻿Ext.define('com.module.common.doctor.OrdersPayPanel_SearhForm', {
 	extend : 'Ext.form.FormPanel',
-	alias : 'widget.DoctorPanel_SearhForm',
+	alias : 'widget.OrdersPayPanel_SearhForm',
 	height : 80,
 	width : '100%',
 	border : false,
@@ -87,11 +87,10 @@
 //2
 Ext
 		.define(
-				"com.module.common.doctor.DoctorPanel_Grid",
+				"com.module.common.doctor.OrdersPayPanel_Grid",
 				{
 					extend : 'Ext.grid.Panel',
-					requires:['com.module.common.doctor.DoctorOperatePanel','com.module.common.doctor.DoctorAuditPanel'],
-					alias : 'widget.DoctorPanel_Grid',
+					alias : 'widget.OrdersPayPanel_Grid',
 					 frame : true,
 	//forceFit:true,//自动填充panel空白处
 	flex:1,
@@ -113,25 +112,25 @@ Ext
 					columns : [ {
 						xtype : 'rownumberer'
 					}, {
-						header : '医生ID',
+						header : 'did',
 						dataIndex : 'did',
 						width : 70,
 						sortable : true
 					},
 					 {
-						header : '医生姓名',
+						header : 'name',
 						dataIndex : 'name',
 						width : 75,
 						sortable : true
 					}, 
 			    {
-			header : '医生电话',
+			header : 'phone',
 			dataIndex : 'phone',
 			width : 120,
 			sortable : true
 		},
 		{
-			header :  '医生性别',
+			header :  'sex',
 			dataIndex : 'sex',
 			width : 80,
 			sortable : true,
@@ -142,34 +141,27 @@ Ext
 				if(value==2)return "未知";
 				
 			}
-		},
-		{
-			header : '医生等级',
-			dataIndex : 'level',
-			width : 80,
+		}, {
+			header : 'ordertotal',
+			dataIndex : 'ordertotal',
+			width : 120,
 			sortable : true
 		},{
-			header :  '医生状态',
-			dataIndex : 'status',
-			width : 80,
-			sortable : true,
-			renderer:function(value)
-			{
-				if(value==0)return "已注册，尚未提交审核信息";
-				if(value==1)return "已提交审核信息，待审核";
-				if(value==2)return "审核未通过";
-				if(value==3)return "审核通过，未完善出诊信息";
-				if(value==4)return "可出诊";
-				if(value==5)return "等待出诊订单";
-				if(value==6)return "出诊中";
-				if(value==7)return "已冻结";
-				
-				
-			}
-		},{
-			header : '最后上线时间',
-			dataIndex : 'lastlogintime',
-			width : 200,
+			header : 'orderallmoney',
+			dataIndex : 'orderallmoney',
+			width : 120,
+			sortable : true
+		},
+		{
+			header : 'platforinmoney',
+			dataIndex : 'orderallmoney',
+			width : 120,
+			sortable : true
+		},
+		{
+			header : 'platformoutmoney',
+			dataIndex : 'platformoutmoney',
+			width : 120,
 			sortable : true
 		}],
 					initComponent : function() {
@@ -178,11 +170,8 @@ Ext
 								.create(
 										'Ext.data.Store',
 										{
-											fields : ['did','phone','pwd','name','score','born','sex','photo','addr'
-											          ,'x','y','level','price','espeed','eattitude','erecord','eeffect'
-											          ,'esupport','intro','times','status','token','remark','lastlogintime'
-											          ,'lct','regtime','account','idno','insend','insbegin','org','ctftype'
-											          ,'ctflvl','svcrange','ptlvl' ],
+											fields : ['did','phone','name','sex','ordertotal','orderallmoney','platforinmoney','platformoutmoney'
+											        ],
 											autoLoad : true,
 											pageSize : frame.config.pageSize,
 											proxy : {
@@ -244,23 +233,13 @@ Ext
 											
 											{
 												xtype : 'button',
-												text : "审核",
-												width:70,
-												//iconCls : 'add.gif',
-												handler : function() {
-													me.auditDoctor();
-												}
-											},
-											{
-												xtype : 'button',
-												text : "冻结",
+												text : "支付",
 												width:70,
 												handler : function() {
 													me.freezeDoctor();
 												}
 											}
-								
-											
+										
 											
 
 									]
@@ -303,45 +282,7 @@ Ext
 						me.selModel = sm;
 						this.callParent();
 					},
-					   freezeDoctor:function()
-					    {
-					    	var me=this;
-					        var rec = me.selModel.getSelection();
-					        if(rec.length==0)
-					        {
-					        	frame.util.QuickMsg.showMsg("请选择要操作的数据");
-					        }
-					         var ids = [];
-							  Ext.each(rec, function(r) {
-								ids.push(r.data.did);
-							
-							 });
-						   Ext.Ajax.request( {
-									url : basePath+'BackDoctorController/freezeDoctor',
-									params : {
-
-										ids : Ext.encode(ids)
-									},
-									success : function(response, options) {
-										var result = Ext.decode(response.responseText);
-										if (result.success == true) {
-										
-														
-											frame.util.QuickMsg.operateSuccess(response);
-											
-											me.getStore().load();
-										}
-
-										else {
-											frame.util.QuickMsg.operateFailure(response);
-										}
-									},
-									failure : function(response, options) {
-										frame.util.QuickMsg.showMsg(frame.lang.global.netError);
-									}
-								});		 
-							
-					    },
+					 
 					refreshDoctor : function() {
 						var me = this;
 						me.store.load();
@@ -354,36 +295,25 @@ Ext
 									.showMsg(frame.lang.global.selectHandleData);
 							return;
 						}
-						Ext.widget('DoctorOperatePanel', {
+						Ext.create('com.module.common.orders.OrdersPayLookPanel', {
 							record : rec,
 							showMode : 'look'
 						}).show();
-					},
-					auditDoctor : function() {
-						var me = this;
-						var rec = frame.util.Grid.getSelectedOne(me);
-						if (Ext.isEmpty(rec)) {
-							frame.util.QuickMsg.showMsg(frame.lang.global.selectHandleData);
-							return;
-						}
-						Ext.widget('DoctorAuditPanel', {
-							title : '资格审核',
-							record : rec
-						}).show();
 					}
+					
 				
 
 				});
 //定义医生面板类
-Ext.define("com.module.common.doctor.DoctorPanel", {
+Ext.define("com.module.common.orders.OrdersPayPanel", {
 	extend : 'Ext.panel.Panel',
 	layout : 'vbox',
 	//初始化医生面板
 	initComponent : function() {
 		var me = this;
 		me.callParent();
-		var grid = Ext.widget('DoctorPanel_Grid');
-		var searchFrom=Ext.widget('DoctorPanel_SearhForm');
+		var grid = Ext.widget('OrdersPayPanel_Grid');
+		var searchFrom=Ext.widget('OrdersPayPanel_SearhForm');
 		 me.add(searchFrom);
 	     me.add(grid);
 

@@ -2,7 +2,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 				{
 					extend : 'Ext.window.Window',
 					alias : 'widget.DoctorOperatePanel',
-					title:'Doctor Detail',
+					title:'医生详细信息',
 					width : 1000,
 					constrain : true,
 					modal : true,
@@ -315,7 +315,7 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 	                        		imgPanel.setTitle(record.data.text);
 	                        		if(frame.util.isNull(me.doctorpic))
 	                        		{
-	                        			frame.util.QuickMsg.showMsg2("照片信息加载失败，请刷新 ");
+	                        			frame.util.QuickMsg.showMsg2("该资质信息用户未上传");
 	                        		}
 	                        	
 	                        		Ext.each(me.doctorpic,function(data)

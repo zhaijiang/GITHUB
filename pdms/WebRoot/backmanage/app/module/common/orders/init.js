@@ -14,6 +14,12 @@ frame.registerModule( {
 			
 			className : 'com.module.common.orders.OrdersStatisticPanel'
 		}
+		,
+		{
+			text : "测试3",
+			
+			className : 'com.module.common.orders.OrdersPayPanel'
+		}
 		]
  
 	} ]

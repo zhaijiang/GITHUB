@@ -22,5 +22,16 @@ public class BackConfig {
 	 * 医生状态 正在审核 待审核
 	 */
 	public  static final int DOC_STATUS_PASSING=1;
+	
+	/**
+	 * 医生补贴比例
+	 */
+	public  static final String DOCTOR_SUBSIDY="doctor_subsidy";
+	
+	
+	/**
+	 *  医生被提成比例
+	 */
+	public  static final String DOCTOR_CUT="doctor_cut";
 
 }
