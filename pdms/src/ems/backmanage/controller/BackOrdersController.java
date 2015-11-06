@@ -252,6 +252,7 @@ public class BackOrdersController extends BaseController {
 			Record record = Db.findFirst(querySql.toString(),values.toArray());
 			double docin = 0.0;
 			double ordertotalprice = 0;
+			double ordercomnum = 0;
 			  double docrealscale = getDoctorRealScale();
 			if (record != null) {
 			
@@ -263,10 +264,22 @@ public class BackOrdersController extends BaseController {
 				if (ordertotalpriceo != null) {
 					ordertotalprice = Double.parseDouble(ordertotalpriceo.toString());
 				}
+				Object ordertotalnumo = record.get("ordercomnum");
+				if (ordertotalnumo != null) {
+					ordercomnum = Double.parseDouble(ordertotalnumo.toString());
+				}
 			}
 
 			int ordertotalnum = 0;
 			values.clear();
+			for( QueryCondition con:conditions)
+			{
+				if(con.getFieldName().contains("ot.time"))
+				{
+					con.setFieldName("t.createtime");
+				}
+			}
+				
 			String sql = FrameDatabaseUtil.getSql(SqlBackOrders.countOrders,
 					Arrays.asList(conditions), values, "and");
 			record = Db.findFirst(sql, values.toArray());
@@ -279,6 +292,7 @@ public class BackOrdersController extends BaseController {
 			double platin = ordertotalprice - docin;
 			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("ordertotalnum", ordertotalnum);
+			result.put("ordercomnum", ordercomnum);
 			result.put("orderstotalprice", ordertotalprice);
 			result.put("docin", docin);
 			result.put("platin", platin);

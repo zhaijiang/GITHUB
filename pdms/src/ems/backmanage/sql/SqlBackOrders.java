@@ -15,14 +15,14 @@ public class SqlBackOrders {
 	 "select  countdata.docin,t.* "+
 	 " from doctor t  left join  " +
 	 " (select o.did,SUM(t2.price)  AS docin from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11  "+
-	 " and ({frameMark}) GROUP BY o.did) AS countdata  ON t.did=countdata.did  ORDER BY  countdata.docin DESC"
+	 " and ({frameMark}) group by o.did) AS countdata  ON t.did=countdata.did  order by  countdata.docin DESC"
     ;
  
 
 
 
  public final static String  countOrder_Doc=
-"select SUM(t2.price) as ordertotalprice,SUM(o.price) AS docin  from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11  "    ;
+"select SUM(t2.price) as docin,SUM(o.price) AS  ordertotalprice ,count(o.oid) as ordercomnum  from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11  "    ;
  
  
 
@@ -34,5 +34,5 @@ public class SqlBackOrders {
  
  public final static String  loadOderPay=
 	 "select countdata.ordertotalnum,countdata.ordertotalprice,countdata.docin,t.*  from doctor t  left join  (select o.did ,COUNT(*) AS ordertotalnum,SUM(o.price)  AS ordertotalprice,SUM(t2.price)  AS docin from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11"+ 
- " and ({frameMark}) GROUP BY o.did) AS countdata  ON t.did=countdata.did  ORDER BY countdata.docin DESC;";
+ " and ({frameMark}) group by o.did) AS countdata  ON t.did=countdata.did  order by countdata.docin DESC;";
 }

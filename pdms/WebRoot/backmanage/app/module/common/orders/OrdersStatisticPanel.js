@@ -128,7 +128,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 			editable : false,
 			store : Ext.create('Ext.data.ArrayStore', {
 				fields : [ 'name', 'value' ],
-				data : [ [ '第一季度', 1 ], [ '第二季度', 2 ], [ '第三季度', 3 ],[ '第三季度', 4 ]]
+				data : [ [ '第一季度', 1 ], [ '第二季度', 2 ], [ '第三季度', 3 ],[ '第四季度', 4 ]]
 	
 			}),
 			listeners:{
@@ -448,7 +448,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
                     var formPanel = me.searchcon;
                     var condition = formPanel.getQueryCondition();
                     Ext.apply(store.proxy.extraParams, {
-                        condition: Ext.encode(condition)
+                        condition:Ext.encode(condition).replace('t.createtime','ot.time')
                     })
                 }
             },
@@ -701,10 +701,15 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 				name: "dd总数",			
 				color:'#990000'
 			};
+			var series5 = { 
+				name: "comtotal",		
+				color:'#ff6633'
+			};
 			var series2 = { 
 				name: "totalMoney",		
 				color:'#CC6633'
 			};
+			
 			var series3 = { 
 				name: "docTotal",		
 				color:'#FF9900'
@@ -717,9 +722,11 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 		
 			
 			statisticChart.addSeries(series1);
+			statisticChart.addSeries(series5);
 			statisticChart.addSeries(series2);
 			statisticChart.addSeries(series3);
 			statisticChart.addSeries(series4);
+		
 	
 			me.load();
 		});
@@ -734,10 +741,11 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 		{
 			condition=me.resultpanel.searchcon.getQueryCondition();
 		}
+	
 		Ext.Ajax.request( {
 			url : basePath + 'BackOrdersController/statisticOrders',
 			params:{
-			  condition:Ext.encode(condition)
+			  condition:Ext.encode(condition).replace('t.createtime','ot.time')
 			},
 			success : function(response) {
 				 var result = Ext.decode(response.responseText);
@@ -748,15 +756,17 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 				  {
 				  	return;
 				  }
-		         var totalorders=datas.ordertotalnum;
+		         var ordertotalnum=datas.ordertotalnum;
+		        var ordercomnum=datas.ordercomnum;
 		         var orderstotalprice=datas.orderstotalprice;
 		         var docin=datas.docin;
 		          var platin=datas.platin;
 		           var chart = me.statisticChart;    
 		           chart.series[0].setData([frame.util.isNull(ordertotalnum)?0:ordertotalnum]);
-		           chart.series[1].setData([frame.util.isNull(orderstotalprice)?0:orderstotalprice]);
-		           chart.series[2].setData([frame.util.isNull(docin)?0:docin]);
-		           chart.series[3].setData([frame.util.isNull(platin)?0:platin]);
+		           chart.series[1].setData([frame.util.isNull(ordercomnum)?0:ordercomnum]);
+		           chart.series[2].setData([frame.util.isNull(orderstotalprice)?0:orderstotalprice]);
+		           chart.series[3].setData([frame.util.isNull(docin)?0:docin]);
+		           chart.series[4].setData([frame.util.isNull(platin)?0:platin]);
 				 }
 
 			},
