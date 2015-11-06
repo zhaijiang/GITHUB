@@ -1,6 +1,7 @@
 package ems.backmanage.frame.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -106,16 +107,37 @@ public class FrameDatabaseUtil {
 	 * @param conditions
 	 * @return
 	 */
-	public static Map<String, Object> getSqlPart(List<QueryCondition> conditions) {
+	public static Map<String, Object> getSqlPart(QueryCondition... conditions) {
 		String sql="";
-		List values=new ArrayList<Object>();
-		 sql = getSql(sql,conditions, values,"and").trim();
+		List<Object> values=new ArrayList<Object>();
+		 sql = getSql(sql,Arrays.asList(conditions), values,"and").trim();
 		 sql=sql.replace("where", "");
 		 Map<String,Object> result=new HashMap<String, Object>();
 		 result.put("sql", sql);
 		 result.put("values", values);
 		 return result;
 	}
+	/**
+	 * 根据条件 获取SQL 片段
+	 * @param conditions
+	 * @return
+	 */
+	public static void getSqlPart(StringBuffer baseSql,List<Object> baseValues,QueryCondition... conditions) {
+		 String sql="";
+		 List<Object> values=new ArrayList<Object>();
+		 sql = getSql(sql,Arrays.asList(conditions), values,"and").trim();
+		 sql=sql.replace("where", "");
+         if(!"".equals(sql))
+         {
+        	 baseSql.append(" and ");
+        	 baseSql.append(sql);
+        	 baseValues.addAll(values);
+         }
+
+	}
+	
+	
+	
 	/**
 	 * 获取 整体SQL
 	 * @param sql 基础SQL 

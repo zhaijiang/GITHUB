@@ -3,30 +3,36 @@ package ems.backmanage.sql;
 public class SqlBackOrders {
 
  public final static String loadOrders=
-	 "SELECT d.name AS dname,d.phone as dphone,u.name as uname, u.phone AS uphone,ad.range,ad.addr, t.* from orders t  LEFT JOIN user  u ON t.uid=u.uid LEFT JOIN  doctor d ON t.did=d.did " +
-	 "LEFT  JOIN useraddr ad ON u.uaid=ad.uaid where 1=1 ";
+	 "select d.name AS dname,d.phone as dphone,u.name as uname, u.phone AS uphone,ad.range,ad.addr, t.* from orders t  left join user  u ON t.uid=u.uid left join  doctor d ON t.did=d.did " +
+	 " LEFT  JOIN useraddr ad ON u.uaid=ad.uaid where 1=1 ";
  public final static String countOrders=
-	 "SELECT count(*) as total from orders t WHERE 1=1";
+	 "select count(*) as total from orders t where 1=1";
  public final static String loadOtrace=
-	 "SELECT * from otrace t WHERE t.oid=? ORDER BY time desc";
+	 "select * from otrace t where t.oid=? order by time desc";
  
- public final static String  loadDoctorByPart0=
-	 "SELECT  income.totalincome,t.*  ";
- public final static String  loadDoctorByPart1=
-"from doctor t  LEFT JOIN  (SELECT o.did,SUM(t2.price*?)  AS totalincome from orders o ,doctor t2,otrace ot WHERE  o.did=t2.did AND o.oid=ot.oid AND o.espeed>0 AND ot.status=11  ";
+
+ public final static String  loadDoctorByIncome=
+	 "select  countdata.docin,t.* "+
+	 " from doctor t  left join  " +
+	 " (select o.did,SUM(t2.price)  AS docin from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11  "+
+	 " and ({frameMark}) GROUP BY o.did) AS countdata  ON t.did=countdata.did  ORDER BY  countdata.docin DESC"
+    ;
  
- public final static String  loadDoctorByPart2=
-	 "  GROUP BY o.did) AS income  ON t.did=income.did  ORDER BY totalincome DESC";
 
 
- public final static String  countDoctorIncome0=
-	 "SELECT  sum(income.totalincome) as totalincome ";
+
+ public final static String  countOrder_Doc=
+"select SUM(t2.price) as ordertotalprice,SUM(o.price) AS docin  from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11  "    ;
  
- //
- //SELECT COUNT(*) from orders  t WHERE 1=1 
- public final static String  countOrdersTotalPrice=
-	"SELECT SUM(o.price) as totalprice from orders  o,otrace ot  WHERE  o.oid=ot.oid AND  ot.status=11";
+ 
+
+
 
  public final static String loadOrdersDetatil=
  "select t.* from orders  t left join otrace ot on t.oid=ot.oid where 1=1 ";
+ 
+ 
+ public final static String  loadOderPay=
+	 "select countdata.ordertotalnum,countdata.ordertotalprice,countdata.docin,t.*  from doctor t  left join  (select o.did ,COUNT(*) AS ordertotalnum,SUM(o.price)  AS ordertotalprice,SUM(t2.price)  AS docin from orders o ,doctor t2,otrace ot where  o.did=t2.did and o.oid=ot.oid and o.espeed>0 and ot.status=11"+ 
+ " and ({frameMark}) GROUP BY o.did) AS countdata  ON t.did=countdata.did  ORDER BY countdata.docin DESC;";
 }

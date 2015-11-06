@@ -134,10 +134,10 @@ function loadModule() {
 //	});
 //	
 
-    Ext.syncRequire("com.module.common.doctor.init");
-	Ext.syncRequire("com.module.common.user.init");
-	Ext.syncRequire("com.module.common.monitor.init");
-	Ext.syncRequire("com.module.common.statistic.init");
+//  Ext.syncRequire("com.module.common.doctor.init");
+//	Ext.syncRequire("com.module.common.user.init");
+//	Ext.syncRequire("com.module.common.monitor.init");
+//	Ext.syncRequire("com.module.common.statistic.init");
 	Ext.syncRequire("com.module.common.orders.init");
 	Ext.syncRequire("com.module.frame.userRole.init");
 	Ext.syncRequire("com.module.frame.systemlog.init");

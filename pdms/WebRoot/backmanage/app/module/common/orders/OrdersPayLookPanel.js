@@ -26,7 +26,7 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	           fields: ['oid','uid','did', 'dlvl', 'status', 'record', 'record_pic', 'createtime', 'evaltime1',
 	            'reevaltime1', 'evaltime2', 'reevaltime2', 'eval1', 'reeval1', 'eval2', 'reeval2', 
 	            'espeed', 'eattitude', 'erecord', 'eeffect', 'esupport', 
-	            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','dphone','uname','uphone','range','addr','totaladdr','platformin','platformpay'],		
+	            'evaluate', 'uaid', 'distance', 'price', 'payid', 'lct','dname','dphone','uname','uphone','range','addr','totaladdr','platin','docin'],		
 	            pageSize : 10,
 				autoLoad : true,
 	            listeners: {
@@ -120,14 +120,14 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	        sortable: true
 	    },
 	    {
-	        header: 'platformin',
-	        dataIndex: 'platformin',
+	        header: 'platin',
+	        dataIndex: 'platin',
 	        width: 80,
 	        sortable: true
 	    },
 	    {
-	        header: 'platformpay',
-	        dataIndex: 'platformpay',
+	        header: 'docin',
+	        dataIndex: 'docin',
 	        width: 80,
 	        sortable: true
 	    }

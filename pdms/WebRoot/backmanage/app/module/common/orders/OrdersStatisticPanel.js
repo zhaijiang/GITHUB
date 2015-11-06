@@ -436,7 +436,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
         	height:'100%',
 			width:'100%',
         	store: Ext.create('Ext.data.Store', {
-        	fields : [ "name","phone","sex","totalincome"],
+        	fields : [ "name","phone","sex","docin"],
 			pageSize : 10,
 			autoLoad : false,
 			sorters: [{
@@ -494,8 +494,8 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 				}
 			},
 			 {
-				header : "totalincome",
-				dataIndex : 'totalincome',
+				header : "docin",
+				dataIndex : 'docin',
 				width : 100
 			}
 			]
@@ -748,15 +748,15 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 				  {
 				  	return;
 				  }
-		         var totalorders=datas.totalorders;
+		         var totalorders=datas.ordertotalnum;
 		         var orderstotalprice=datas.orderstotalprice;
-		         var doctotalincome=datas.doctotalincome;
-		         var systotalincome=datas.systotalincome;
-		          var chart = me.statisticChart;    
-		           chart.series[0].setData([frame.util.isNull(totalorders)?0:totalorders]);
+		         var docin=datas.docin;
+		          var platin=datas.platin;
+		           var chart = me.statisticChart;    
+		           chart.series[0].setData([frame.util.isNull(ordertotalnum)?0:ordertotalnum]);
 		           chart.series[1].setData([frame.util.isNull(orderstotalprice)?0:orderstotalprice]);
-		           chart.series[2].setData([frame.util.isNull(doctotalincome)?0:doctotalincome]);
-		           chart.series[3].setData([frame.util.isNull(systotalincome)?0:systotalincome]);
+		           chart.series[2].setData([frame.util.isNull(docin)?0:docin]);
+		           chart.series[3].setData([frame.util.isNull(platin)?0:platin]);
 				 }
 
 			},

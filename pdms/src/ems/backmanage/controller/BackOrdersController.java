@@ -1,14 +1,13 @@
 package ems.backmanage.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -22,7 +21,6 @@ import ems.backmanage.sql.SqlBack;
 import ems.backmanage.sql.SqlBackDoctor;
 import ems.backmanage.sql.SqlBackOrders;
 import ems.controller.BaseController;
-import ems.model.Doctor;
 
 @IgnoreInterceptor
 public class BackOrdersController extends BaseController {
@@ -114,9 +112,9 @@ public class BackOrdersController extends BaseController {
 							{
 								 docin = dprice*scale;
 							}
-							double platformin = price-docin;
-							 data.set("platformin", platformin);
-							 data.set("platformpay", docin);
+							double platin = price-docin;
+							 data.set("platin", platin);
+							 data.set("docin", docin);
 						}
 					}
 				}
@@ -154,6 +152,7 @@ public class BackOrdersController extends BaseController {
 	/**
 	 * 排序查询
 	 */
+	@SuppressWarnings("unchecked")
 	public void loadDoctorByIncome() {
 
 		try {
@@ -162,38 +161,62 @@ public class BackOrdersController extends BaseController {
 			Integer limit = getPara("limit") == null ? null : Integer
 					.parseInt(getPara("limit").toString());
 			String condition = getPara("condition");
-			String sql = "";
-			List<Object> values = new ArrayList<Object>();
+			QueryCondition[] conditions ={};
 			if (condition != null) {
 
-				QueryCondition[] conditions = FrameJsonUtil.getObjectMapper()
+				 conditions = FrameJsonUtil.getObjectMapper()
 						.readValue(condition, QueryCondition[].class);
-
-				Map<String, Object> map = FrameDatabaseUtil.getSqlPart(Arrays
-						.asList(conditions));
-				Object sqlo = map.get("sql");
-				if (sqlo != null) {
-					sql = sqlo.toString();
-				}
-				Object valueso = map.get("values");
-				if (valueso != null) {
-					values = (List<Object>) valueso;
-				}
 			}
-			// 完成时间
-			sql = sql.replace("t.createtime", "ot.time");
-			sql = "".equals(sql) ? "" : " and " + sql;
-
-			values.add(0, getDoctorRealScale());
-			int pageNum = start / limit + 1;
+			List<QueryCondition> cons = new ArrayList<QueryCondition>(
+					Arrays.asList(conditions));
+             Iterator<QueryCondition>	it=cons.iterator();
+         	StringBuffer querySql= new StringBuffer(SqlBackOrders.loadDoctorByIncome);
+			String sql = "";
+			List<Object> values = new ArrayList<Object>();
+		    while(it.hasNext())
+		    {
+		    	    QueryCondition con=it.next();
+				    if(con.getFieldName().equals("ot.time"))
+				    {
+						Map<String, Object> map = FrameDatabaseUtil.getSqlPart(con);
+						Object sqlo = map.get("sql");
+						if (sqlo != null) {
+							sql = sqlo.toString();
+						}
+						Object valueso = map.get("values");
+						if (valueso != null) {
+							values .addAll((List<Object>) valueso);
+						}
+				    	  sql = "".equals(sql) ? "" : " 1=1 " + sql;
+		                  sql= querySql.toString().replaceAll("{frameMark}", sql);
+		                  querySql=new StringBuffer(sql);
+		      	  
+				   }
+				   else{
+					  FrameDatabaseUtil.getSqlPart(querySql,values,con);
+				  }
+			
+			
+			}
 			// 通过 condition 得到sql
-			Page<Record> datalist = Db
-					.paginate(pageNum, limit, SqlBackOrders.loadDoctorByPart0,
-							SqlBackOrders.loadDoctorByPart1 + sql
-									+ SqlBackOrders.loadDoctorByPart2,
-							values.toArray());
-			List<Record> datas = datalist.getList();
-			setAttr("returnData", datas);
+			 Map<String, Object> result = FrameDatabaseUtil.queryByPage(sql, start, limit, values.toArray());
+			 List<Record> datalist = (List<Record>) result.get("datas");
+			 double docin=0.0;
+			 for(Record data:datalist)
+			 {
+			   double docrealscale = getDoctorRealScale();
+			   Object	docino = data.get("docin");
+			   if(docino!=null)
+			   {
+				  docin=Double.parseDouble(docino.toString());
+				  docin= docin*docrealscale;
+				  data.set("docin", docin);
+				  
+			    }
+			 }
+			
+			setAttr("returnData", datalist);
+			setAttr("total", result.get("total"));
 			setAttr("success", true);
 
 		} catch (Exception e) {
@@ -214,74 +237,51 @@ public class BackOrdersController extends BaseController {
 		try {
 
 			String condition = getPara("condition");
-			String sql = "";
-			List<Object> values = new ArrayList<Object>();
-			QueryCondition[] conditions = {};
+
+
+			QueryCondition[] conditions ={};
 			if (condition != null) {
 
-				conditions = FrameJsonUtil.getObjectMapper().readValue(
-						condition, QueryCondition[].class);
+				 conditions = FrameJsonUtil.getObjectMapper()
+						.readValue(condition, QueryCondition[].class);
 			}
-
-			Map<String, Object> map = FrameDatabaseUtil.getSqlPart(Arrays
-					.asList(conditions));
-			Object sqlo = map.get("sql");
-			if (sqlo != null) {
-				sql = sqlo.toString();
-			}
-			Object valueso = map.get("values");
-			if (valueso != null) {
-				values = (List<Object>) valueso;
-			}
-			// 完成时间
-			sql = sql.replace("t.createtime", "ot.time");
-			sql = "".equals(sql) ? "" : " and " + sql;
-			values.add(0, getDoctorRealScale());
-
-			List<Record> datalist = Db.find(SqlBackOrders.countDoctorIncome0
-					+ SqlBackOrders.loadDoctorByPart1 + sql
-					+ SqlBackOrders.loadDoctorByPart2, values.toArray());
-			double doctotalincome = 0.0;
-			if (datalist != null && datalist.size() != 0) {
-				Record datas = datalist.get(0);
-				Object totalincomeo = datas.get("totalincome");
-				if (totalincomeo != null) {
-					doctotalincome = Double
-							.parseDouble(totalincomeo.toString());
+		
+         	StringBuffer querySql= new StringBuffer(SqlBackOrders.countOrder_Doc);
+			 List<Object> values=new ArrayList<Object>();
+			 FrameDatabaseUtil.getSqlPart(querySql, values, conditions);
+			Record record = Db.findFirst(querySql.toString(),values.toArray());
+			double docin = 0.0;
+			double ordertotalprice = 0;
+			  double docrealscale = getDoctorRealScale();
+			if (record != null) {
+			
+				Object docino = record.get("docin");
+				if (docino != null) {
+					docin = Double.parseDouble(docino.toString())*docrealscale;
+				}
+				Object ordertotalpriceo = record.get("ordertotalprice");
+				if (ordertotalpriceo != null) {
+					ordertotalprice = Double.parseDouble(ordertotalpriceo.toString());
 				}
 			}
 
-			int totalorders = 0;
+			int ordertotalnum = 0;
 			values.clear();
-			sql = FrameDatabaseUtil.getSql(SqlBackOrders.countOrders,
+			String sql = FrameDatabaseUtil.getSql(SqlBackOrders.countOrders,
 					Arrays.asList(conditions), values, "and");
-			datalist = Db.find(sql, values.toArray());
-			if (datalist != null && datalist.size() != 0) {
-				Object totalo = datalist.get(0).get("total");
-				if (totalo != null) {
-					totalorders = Integer.parseInt(totalo.toString());
+			record = Db.findFirst(sql, values.toArray());
+			if (record != null ) {
+				Object ordertotalnumo = record.get("total");
+				if (ordertotalnumo != null) {
+					ordertotalnum = Integer.parseInt(ordertotalnumo.toString());
 				}
 			}
-
-			double orderstotalprice = 0;
-			values.clear();
-			// 完成时间
-			sql = FrameDatabaseUtil.getSql(SqlBackOrders.countOrdersTotalPrice,
-					Arrays.asList(conditions), values, "and");
-			sql = sql.replace("t.createtime", "ot.time");
-			datalist = Db.find(sql, values.toArray());
-			if (datalist != null && datalist.size() != 0) {
-				Object totalo = datalist.get(0).get("totalprice");
-				if (totalo != null) {
-					orderstotalprice = Integer.parseInt(totalo.toString());
-				}
-			}
-			double systotalincome = orderstotalprice - doctotalincome;
+			double platin = ordertotalprice - docin;
 			Map<String, Object> result = new HashMap<String, Object>();
-			result.put("totalorders", totalorders);
-			result.put("orderstotalprice", orderstotalprice);
-			result.put("doctotalincome", doctotalincome);
-			result.put("systotalincome", systotalincome);
+			result.put("ordertotalnum", ordertotalnum);
+			result.put("orderstotalprice", ordertotalprice);
+			result.put("docin", docin);
+			result.put("platin", platin);
 			setAttr("returnData", result);
 			setAttr("success", true);
 
@@ -316,6 +316,114 @@ public class BackOrdersController extends BaseController {
 		}
 
 		return (100 + subsidy - cut) / 100.0;
+
+	}
+	
+	
+	/**
+	 * Order Pay every doc
+	 */
+	public void loadOrderPay() {
+
+		try {
+			Integer start = getPara("start") == null ? null : Integer
+					.parseInt(getPara("start").toString());
+			Integer limit = getPara("limit") == null ? null : Integer
+					.parseInt(getPara("limit").toString());
+			String condition = getPara("condition");
+			QueryCondition[] conditions={}; ;
+			
+			if (condition != null) {
+
+				conditions= FrameJsonUtil.getObjectMapper()
+						.readValue(condition, QueryCondition[].class);
+				
+			}
+			List<QueryCondition> cons = new ArrayList<QueryCondition>(
+					Arrays.asList(conditions));
+			Calendar a=Calendar.getInstance();
+            Integer year=  a.get(Calendar.YEAR);
+            Integer month=  a.get(Calendar.MONTH)+1;
+			//如果没有指定时间 则按当前月处理
+			if(condition==null||!condition.contains("ot.time"))
+			{
+		
+				String startTime=year+"-"+month+"-"+"01 00:00:00";
+				String endTime=year+"-"+month+"-"+"31 23:59:59";
+				QueryCondition q=new QueryCondition();
+				q.setOperation("between");
+				q.setFieldName("ot.time");
+				q.setValue("["+startTime+","+endTime+"]");
+				
+			    cons.add(0,q);
+			}
+		    Iterator<QueryCondition>	it=cons.iterator();
+         	StringBuffer querySql= new StringBuffer(SqlBackOrders.loadOderPay);
+			String sql = "";
+			List<Object> values = new ArrayList<Object>();
+		    while(it.hasNext())
+		    {
+		    	    QueryCondition con=it.next();
+				    if(con.getFieldName().equals("ot.time"))
+				    {
+						Map<String, Object> map = FrameDatabaseUtil.getSqlPart(con);
+						Object sqlo = map.get("sql");
+						if (sqlo != null) {
+							sql = sqlo.toString();
+						}
+						Object valueso = map.get("values");
+						if (valueso != null) {
+							values .addAll((List<Object>) valueso);
+						}
+				    	  sql = "".equals(sql) ? "" : " 1=1 " + sql;
+		                  sql= querySql.toString().replaceAll("{frameMark}", sql);
+		                  querySql=new StringBuffer(sql);
+		      	  
+				   }
+				   else{
+					  FrameDatabaseUtil.getSqlPart(querySql,values,con);
+				  }
+			
+			
+			}
+			// 通过 condition 得到sql
+			 Map<String, Object> result = FrameDatabaseUtil.queryByPage(sql, start, limit, values.toArray());
+			 List<Record> datalist = (List<Record>) result.get("datas");
+		
+			 double ordertotalprice=0.0;
+			 double docin=0.0;
+			 for(Record data:datalist)
+			 {
+			  Object	ordertotalpriceo = data.get("ordertotalprice");
+			   if(ordertotalpriceo!=null)
+			   {
+				   ordertotalprice =Double.parseDouble(ordertotalpriceo.toString());
+			   }
+			   double docrealscale = getDoctorRealScale();
+			  Object	docino = data.get("docin");
+			  if(docino!=null)
+			  {
+				  docin=Double.parseDouble(docino.toString());
+				  docin= docin*docrealscale;
+				  data.set("docin", docin);
+				  
+			  }
+			  data.set("platin", ordertotalprice-docin);
+			
+			 }
+			
+			setAttr("returnData", datalist);
+			setAttr("total", result.get("total"));
+			setAttr("success", true);
+			renderJson();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			setAttr("success", false);
+
+		}
+		renderJson();
 
 	}
 }

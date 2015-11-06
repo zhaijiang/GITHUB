@@ -142,8 +142,8 @@ Ext
 				
 			}
 		}, {
-			header : 'ordertotal',
-			dataIndex : 'ordertotal',
+			header : 'ordertotalnum',
+			dataIndex : 'ordertotalnum',
 			width : 120,
 			sortable : true
 		},{
@@ -170,7 +170,7 @@ Ext
 								.create(
 										'Ext.data.Store',
 										{
-											fields : ['did','phone','name','sex','ordertotal','orderallmoney','platforinmoney','platformoutmoney'
+											fields : ['did','phone','name','sex','ordertotalnum','ordertotalprice','platin','docin'
 											        ],
 											autoLoad : true,
 											pageSize : frame.config.pageSize,
