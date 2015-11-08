@@ -101,11 +101,12 @@ public class BackOrdersController extends BaseController {
 					{
 						docPrice.put(doc.getLong("did"), doc.getInt("price"));
 					}
+					double scale = getDoctorRealScale();
 					for (Record data : datali) {
 						Object priceo = data.get("price");
 						if (priceo != null) {
 							price = Integer.parseInt(priceo.toString());
-							double scale = getDoctorRealScale();
+						
 							Integer dprice = docPrice.get(data.getLong("did"));
 							double docin=0;
 							if(dprice!=null)
@@ -183,12 +184,12 @@ public class BackOrdersController extends BaseController {
 						if (sqlo != null) {
 							sql = sqlo.toString();
 						}
-						Object valueso = map.get("values");
+ 						Object valueso = map.get("values");
 						if (valueso != null) {
 							values .addAll((List<Object>) valueso);
 						}
-				    	  sql = "".equals(sql) ? "" : " 1=1 " + sql;
-		                  sql= querySql.toString().replaceAll("{frameMark}", sql);
+				    	  sql = "".equals(sql) ? "1=1" :  sql;
+		                  sql= querySql.toString().replaceAll("frameMark", sql);
 		                  querySql=new StringBuffer(sql);
 		      	  
 				   }
@@ -198,13 +199,15 @@ public class BackOrdersController extends BaseController {
 			
 			
 			}
+		    sql= querySql.toString().replaceAll("frameMark", "1=1");
 			// 通过 condition 得到sql
 			 Map<String, Object> result = FrameDatabaseUtil.queryByPage(sql, start, limit, values.toArray());
 			 List<Record> datalist = (List<Record>) result.get("datas");
 			 double docin=0.0;
+			  double docrealscale = getDoctorRealScale();
 			 for(Record data:datalist)
 			 {
-			   double docrealscale = getDoctorRealScale();
+				 docin=0.0;
 			   Object	docino = data.get("docin");
 			   if(docino!=null)
 			   {
@@ -253,7 +256,7 @@ public class BackOrdersController extends BaseController {
 			double docin = 0.0;
 			double ordertotalprice = 0;
 			double ordercomnum = 0;
-			  double docrealscale = getDoctorRealScale();
+		    double docrealscale = getDoctorRealScale();
 			if (record != null) {
 			
 				Object docino = record.get("docin");
@@ -359,7 +362,7 @@ public class BackOrdersController extends BaseController {
             Integer year=  a.get(Calendar.YEAR);
             Integer month=  a.get(Calendar.MONTH)+1;
 			//如果没有指定时间 则按当前月处理
-			if(condition==null||!condition.contains("ot.time"))
+			if(condition==null||!condition.toString().contains("ot.time"))
 			{
 		
 				String startTime=year+"-"+month+"-"+"01 00:00:00";
@@ -367,10 +370,17 @@ public class BackOrdersController extends BaseController {
 				QueryCondition q=new QueryCondition();
 				q.setOperation("between");
 				q.setFieldName("ot.time");
-				q.setValue("["+startTime+","+endTime+"]");
+				q.setValueType("[Date]");
+				List<Object> times=new ArrayList<Object>();
+				times.add(startTime);
+				times.add(endTime);
+				q.setValue(times);
 				
 			    cons.add(0,q);
 			}
+			QueryCondition queryCondition = new QueryCondition();
+
+		
 		    Iterator<QueryCondition>	it=cons.iterator();
          	StringBuffer querySql= new StringBuffer(SqlBackOrders.loadOderPay);
 			String sql = "";
@@ -389,8 +399,8 @@ public class BackOrdersController extends BaseController {
 						if (valueso != null) {
 							values .addAll((List<Object>) valueso);
 						}
-				    	  sql = "".equals(sql) ? "" : " 1=1 " + sql;
-		                  sql= querySql.toString().replaceAll("{frameMark}", sql);
+				    	  sql = "".equals(sql) ? "1=1" :  sql;
+		                  sql= querySql.toString().replaceAll("frameMark", sql);
 		                  querySql=new StringBuffer(sql);
 		      	  
 				   }
@@ -400,20 +410,26 @@ public class BackOrdersController extends BaseController {
 			
 			
 			}
+		    sql= querySql.toString().replaceAll("frameMark", "1=1");
+		    sql=sql+" order by countdata.docin DESC";
 			// 通过 condition 得到sql
 			 Map<String, Object> result = FrameDatabaseUtil.queryByPage(sql, start, limit, values.toArray());
 			 List<Record> datalist = (List<Record>) result.get("datas");
 		
 			 double ordertotalprice=0.0;
 			 double docin=0.0;
+			 double docrealscale = getDoctorRealScale();
 			 for(Record data:datalist)
 			 {
+				  ordertotalprice=0.0;
+				  docin=0.0;
+
 			  Object	ordertotalpriceo = data.get("ordertotalprice");
 			   if(ordertotalpriceo!=null)
 			   {
 				   ordertotalprice =Double.parseDouble(ordertotalpriceo.toString());
 			   }
-			   double docrealscale = getDoctorRealScale();
+			   
 			  Object	docino = data.get("docin");
 			  if(docino!=null)
 			  {
@@ -422,7 +438,8 @@ public class BackOrdersController extends BaseController {
 				  data.set("docin", docin);
 				  
 			  }
-			  data.set("platin", ordertotalprice-docin);
+			  double platin = ordertotalprice-docin;
+			  data.set("platin", platin==0.0?null:platin);
 			
 			 }
 			

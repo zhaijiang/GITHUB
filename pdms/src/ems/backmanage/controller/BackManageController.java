@@ -12,6 +12,8 @@
  */
 package ems.backmanage.controller;
 
+import java.util.Calendar;
+
 import ems.backmanage.helper.IgnoreInterceptor;
 import ems.controller.BaseController;
 
@@ -29,6 +31,17 @@ public class BackManageController  extends BaseController{
 		this.setSessionAttr("user", username);
 		this.render("/backmanage/main.jsp");
 		System.out.println("--login success--");
+
+	}
+	
+	public void loadCurrentTime() {
+		Calendar a=Calendar.getInstance();
+        Integer year=  a.get(Calendar.YEAR);
+        Integer month=  a.get(Calendar.MONTH)+1;
+		setAttr("year", year);
+		setAttr("month", month);
+		setAttr("success", true);
+		renderJson();
 
 	}
 

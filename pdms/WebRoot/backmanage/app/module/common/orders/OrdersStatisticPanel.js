@@ -56,7 +56,7 @@ Ext.define('com.module.common.orders.OrdersStatisticPanel_SearhForm',
 		 var year = Ext.create('Ext.form.field.ComboBox', {
 			fieldLabel : "年",
 			name : 'year',
-			allowBlank:false,
+			
 			autoScroll:true,
 			labelWidth:30,
 			displayField : 'name',
