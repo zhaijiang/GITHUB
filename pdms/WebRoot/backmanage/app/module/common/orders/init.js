@@ -1,25 +1,26 @@
 
 frame.registerModule( {
-	text : frame.lang.common.system.systemManage,
+	text : "订单管理",
 	children : [ 
 	{
-		text : frame.lang.frame.systemlog.maintainerManage,
+		text : "订单管理",
 		children : [ {
-			text : "测试",
+			text : "订单列表",
 			
 			className : 'com.module.common.orders.OrdersPanel'
 		},
 		{
-			text : "测试2",
+			text : "订单支付",
+			
+			className : 'com.module.common.orders.OrdersPayPanel'
+		},
+		{
+			text : "订单统计",
 			
 			className : 'com.module.common.orders.OrdersStatisticPanel'
 		}
-		,
-		{
-			text : "测试3",
-			
-			className : 'com.module.common.orders.OrdersPayPanel'
-		}
+		
+		
 		]
  
 	} ]

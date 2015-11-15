@@ -204,6 +204,76 @@
 	      
 				return condition;
 	},
+	
+	
+	getQueryCondition2:function()
+	{
+			    var formpanel=this;
+				var values= formpanel.getForm().getValues();
+		
+				
+				var condition=[];
+			
+				var happenTimeStart = null;
+				var happenTimeEnd = null;
+			
+				var yearnum=formpanel.year.getValue();
+			     var monthnum=formpanel.month.getValue();
+				if(!frame.util.isNull(monthnum))
+				{
+					// 按月
+					 var yearnum=formpanel.year.getValue();
+					 var monthnum=formpanel.month.getValue();
+					 happenTimeStart=yearnum+"-"+monthnum+"-01 00:00:00"
+					 happenTimeEnd=yearnum+"-"+monthnum+"-31 23:59:59"
+					 
+					
+					
+					
+				}
+				
+				else if(!frame.util.isNull(yearnum)){
+					 var yearnum=formpanel.year.getValue();
+					 happenTimeStart=yearnum+"-01-01 00:00:00"
+					 happenTimeEnd=yearnum+"-12-31 23:59:59"
+				}
+				else{
+					
+				}
+				
+				if (!frame.util.isNull(happenTimeStart)
+						&& frame.util.isNull(happenTimeEnd)) {
+					condition.push({
+						fieldName : 'ot.time',
+						operation : 'ge',
+						valueType:'Date',
+						value : happenTimeStart
+					});
+				} else if (!frame.util.isNull(happenTimeEnd)
+						&& frame.util.isNull(happenTimeStart)) {
+					condition.push({
+						fieldName : 'ot.time',
+						operation : 'le',
+						valueType:'Date',
+						value : happenTimeEnd
+					});
+				} else if (!frame.util.isNull(happenTimeEnd)
+						&& !frame.util.isNull(happenTimeStart)) {
+					if (happenTimeStart > happenTimeEnd) {
+						frame.util.QuickMsg
+								.showMsg(frame.lang.global.startTimeLessThanEndTime);
+					}
+					condition.push({
+						fieldName : 'ot.time',
+						valueType:'[Date]',
+						operation : 'between',
+						value : [ happenTimeStart, happenTimeEnd ]
+					});
+				}
+		
+	      
+				return condition;
+	},
 	loadCurrentTime:function()
 	{
 		var me=this;
@@ -272,25 +342,25 @@ Ext
 					columns : [ {
 						xtype : 'rownumberer'
 					}, {
-						header : 'did',
+						header : '医生ID',
 						dataIndex : 'did',
 						width : 70,
 						sortable : true
 					},
 					 {
-						header : 'name',
+						header : '医生姓名',
 						dataIndex : 'name',
 						width : 75,
 						sortable : true
 					}, 
 			    {
-			header : 'phone',
+			header : '医生电话',
 			dataIndex : 'phone',
 			width : 120,
 			sortable : true
 		},
 		{
-			header :  'sex',
+			header :  '医生性别',
 			dataIndex : 'sex',
 			width : 80,
 			sortable : true,
@@ -302,24 +372,24 @@ Ext
 				
 			}
 		}, {
-			header : 'ordertotalnum',
+			header: '本月已完成订单总数',
 			dataIndex : 'ordertotalnum',
-			width : 120,
+			width : 140,
 			sortable : true
 		},{
-			header : 'ordertotalprice',
+			header: '本月订单交易总金额',
 			dataIndex : 'ordertotalprice',
-			width : 120,
+			width : 140,
 			sortable : true
 		},
 		{
-			header : 'platin',
+			header: '本月平台提取总金额',
 			dataIndex : 'platin',
-			width : 120,
+			width : 140,
 			sortable : true
 		},
 		{
-			header : 'docin',
+			header : '本月支付总金额',
 			dataIndex : 'docin',
 			width : 120,
 			sortable : true
@@ -396,7 +466,7 @@ Ext
 												text : "支付",
 												width:70,
 												handler : function() {
-													me.freezeDoctor();
+													me.payDoctor();
 												}
 											}
 										
@@ -457,10 +527,22 @@ Ext
 						}
 						Ext.create('com.module.common.orders.OrdersPayLookPanel', {
 							record : rec,
-							showMode : 'look'
+							showMode : 'look',
+							searchForm: me.ownerCt.down('form')
+						}).show();
+					},
+					payDoctor: function() {
+						var me = this;
+						var recs = me.selModel.getSelection();
+						if (Ext.isEmpty(recs)) {
+							frame.util.QuickMsg
+									.showMsg(frame.lang.global.selectHandleData);
+							return;
+						}
+						Ext.create('com.module.common.orders.OrdersBatchPayPanel', {
+							records : recs
 						}).show();
 					}
-					
 				
 
 				});

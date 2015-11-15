@@ -83,7 +83,7 @@ public class BackOrdersController extends BaseController {
 					Arrays.asList(conditions));
 			cons.add(queryCondition);
 			Map<String, Object> result = FrameDatabaseUtil.queryByCondition(
-					SqlBackOrders.loadOrders, cons, start, limit);
+					SqlBackOrders.loadOrdersDetatil, cons, start, limit);
 			Object datas = result.get("datas");
 			if (datas != null) {
 				List<Record> datali = (List<Record>) datas;

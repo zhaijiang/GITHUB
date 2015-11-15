@@ -9,7 +9,7 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	alias: 'widget.OrdersPayLookPanel',
 	width: 1000,
 	constrain: true,
-	title:'Orders Detail',
+	title:'医生该月完成的订单',
 	modal: true,
 	height: 600,
 	layout: 'fit',
@@ -19,7 +19,6 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 		var me = this;
 		
 		   var orders = Ext.create('Ext.grid.Panel', {
-	        	title:'orders',
 	        	height:'100%',
 				width:'100%',
 	        	store: Ext.create('Ext.data.Store', {
@@ -32,15 +31,26 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	            listeners: {
 	                'beforeload': function(store) {
 	                    var condition = [];
+	                    condition=me.searchForm.getQueryCondition2();
 	                    condition.push({
 							fieldName : 't.did',
 							operation : 'eq',
 							valueType:'Integer',
 							value : me.record.data.did
 						});
-	                    var date=new Date();
-	                  var  year=date.getFullYear();
-	                  var month=date.getMonth();
+	                    condition.push({
+							fieldName : 't.espeed',
+							operation : '>',
+							valueType:'Integer',
+							value : 0
+						});
+	                    condition.push({
+							fieldName : 'ot.status',
+							operation : 'eq',
+							valueType:'Integer',
+							value : 11
+						});
+
 	                    Ext.apply(store.proxy.extraParams, {
 	                        condition: Ext.encode(condition)
 	                    })
@@ -49,7 +59,6 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	            proxy : {
 					type : 'ajax',
 					url : basePath+'BackOrdersController/loadOrdersDetail',
-					//SELECT u.name as uname ,ua.* FROM useraddr ua LEFT JOIN  USER u ON  ua.uid=u.uid WHERE ua.uid=?
 					extraParams : {
 					},
 					reader : {
@@ -80,13 +89,13 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	        xtype: 'rownumberer'
 	    },
 	    {
-	        header: 'OrderID',
+	        header: '订单ID',
 	        dataIndex: 'oid',
 	        width: 70,
 	        sortable: true
 	    },
 	    {
-	        header: 'status',
+	        header: '订单状态',
 	        dataIndex: 'status',
 	        width: 150,
 	        sortable: true,
@@ -107,28 +116,29 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 						return value;
 					}        
 	    },
+	  
 	    {
-	        header: 'createtime',
-	        dataIndex: 'createtime',
-	        width: 150,
-	        sortable: true
-	    },
-	    {
-	        header: 'price',
+	        header: '订单价格',
 	        dataIndex: 'price',
 	        width: 80,
 	        sortable: true
 	    },
 	    {
-	        header: 'platin',
+	        header: '平台提取金额',
 	        dataIndex: 'platin',
+	        width: 90,
+	        sortable: true
+	    },
+	    {
+	        header: '应支付金额',
+	        dataIndex: 'docin',
 	        width: 80,
 	        sortable: true
 	    },
 	    {
-	        header: 'docin',
-	        dataIndex: 'docin',
-	        width: 80,
+	        header: '创建时间',
+	        dataIndex: 'createtime',
+	        width: 150,
 	        sortable: true
 	    }
 				]

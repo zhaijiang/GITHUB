@@ -274,7 +274,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 		var me=this;
 		  me.callParent();
         var orders = Ext.create('Ext.grid.Panel', {
-        	title:'orders',
+        	title:'订单列表',
         	height:'100%',
 			width:'100%',
         	store: Ext.create('Ext.data.Store', {
@@ -326,37 +326,37 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
         xtype: 'rownumberer'
     },
     {
-        header: 'OrderID',
+        header: '订单ID',
         dataIndex: 'oid',
         width: 70,
         sortable: true
     },
     {
-        header: 'dname',
+        header: '医生姓名',
         dataIndex: 'dname',
         width: 75,
         sortable: true
     },
       {
-        header: 'dphone',
+        header: '医生电话',
         dataIndex: 'dphone',
         width: 120,
         sortable: true
     },
      {
-        header: 'uname',
+        header: '用户姓名',
         dataIndex: 'uname',
         width: 75,
         sortable: true
     },
     {
-        header: 'uphone',
+        header: '用户电话',
         dataIndex: 'uphone',
         width: 120,
         sortable: true
     },
     {
-        header: 'status',
+        header: '订单状态',
         dataIndex: 'status',
         width: 150,
         sortable: true,
@@ -377,22 +377,23 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 					return value;
 				}        
     },
+   
     {
-        header: 'createtime',
-        dataIndex: 'createtime',
-        width: 150,
-        sortable: true
-    },
-    {
-        header: 'price',
+        header: '订单价格',
         dataIndex: 'price',
         width: 80,
         sortable: true
     },
     {
-        header: 'evaluate',
+        header: '订单总体评价',
         dataIndex: 'evaluate',
         width: 200,
+        sortable: true
+    },
+    {
+        header: '创建时间',
+        dataIndex: 'createtime',
+        width: 150,
         sortable: true
     }
 			]
@@ -431,7 +432,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 		});
 		orders.addDocked(ordersbbar);
 		var doctor = Ext.create('Ext.grid.Panel', {
-        	title:'doctor',
+        	title:'医生收入列表',
         	hidden:true,
         	height:'100%',
 			width:'100%',
@@ -474,17 +475,17 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
         	columns : [  {
 			xtype : 'rownumberer'
 			}, {
-				header : "name",
+				header : "医生姓名",
 				dataIndex : 'name',
 				width : 100
 			},
 			 {
-				header : "phone",
+				header : "医生电话",
 				dataIndex : 'dname',
 				width : 100
 			},
 			 {
-				header : "sex",
+				header : "医生性别",
 				dataIndex : 'sex',
 				width : 80,
 				renderer:function(value)
@@ -494,7 +495,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 				}
 			},
 			 {
-				header : "docin",
+				header : "医生总收入",
 				dataIndex : 'docin',
 				width : 100
 			}
@@ -569,16 +570,16 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 			 expanded: true,
 			children:[{
 			  id:'total',
-			  text:'total',
+			  text:'订单统计',
 			  leaf:true
 			},
 		    {
 			  id:'doctor',
-			  text:'doctor',
+			  text:'医生收入列表',
 			  leaf:true
 			},{
 			  id:'orders',
-			  text:'orders',
+			  text:'订单列表',
 			  leaf:true
 			}]
 		  }}),
@@ -661,7 +662,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 					//margin: [0, 0, 0, 0],
 					renderTo:chartpanel.id
 				},
-				title: { text: "统计报表" }, 
+				title: { text: "订单统计" }, 
 				xAxis: {
 		            categories: [
 		               "类型"
@@ -698,24 +699,24 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Chart",{
 			});
 			me.statisticChart = statisticChart;	
 			var series1 = { 
-				name: "dd总数",			
+				name: "该时间段内创建的订单总数",			
 				color:'#990000'
 			};
 			var series5 = { 
-				name: "comtotal",		
+				name: "该时间段内完成的订单总数",		
 				color:'#ff6633'
 			};
 			var series2 = { 
-				name: "totalMoney",		
+				name: "总交易额",		
 				color:'#CC6633'
 			};
 			
 			var series3 = { 
-				name: "docTotal",		
+				name: "支付医生金额",		
 				color:'#FF9900'
 			};
 			var series4 = { 
-			    name: "allMoney",		
+			    name: "平台总收入",		
 				color:'#0066CC'
 				 
 			};

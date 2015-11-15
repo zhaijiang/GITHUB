@@ -17,12 +17,12 @@ Ext.define('com.module.common.orders.OrdersPanel_SearhForm', {
     initComponent: function() {
         var me = this;
         me.items = [{
-            fieldLabel: "dname",
+            fieldLabel: "医生姓名",
             name: 'dname',
             xtype: 'textfield'
         },
         {
-            fieldLabel: "uphone",
+            fieldLabel: "用户电话",
             name: 'uphone',
             xtype: 'textfield'
         }];
@@ -91,37 +91,37 @@ Ext.define("com.module.common.orders.OrdersPanel_Grid", {
         xtype: 'rownumberer'
     },
     {
-        header: 'OrderID',
+        header: '订单ID',
         dataIndex: 'oid',
         width: 70,
         sortable: true
     },
     {
-        header: 'dname',
+        header: '医生姓名',
         dataIndex: 'dname',
         width: 75,
         sortable: true
     },
       {
-        header: 'dphone',
+        header: '医生电话',
         dataIndex: 'dphone',
         width: 120,
         sortable: true
     },
      {
-        header: 'uname',
+        header: '用户姓名',
         dataIndex: 'uname',
         width: 75,
         sortable: true
     },
     {
-        header: 'uphone',
+        header: '用户电话',
         dataIndex: 'uphone',
         width: 120,
         sortable: true
     },
     {
-        header: 'status',
+        header: '订单状态',
         dataIndex: 'status',
         width: 150,
         sortable: true,
@@ -143,19 +143,19 @@ Ext.define("com.module.common.orders.OrdersPanel_Grid", {
 				}        
     },
     {
-        header: 'createtime',
+        header: '创建时间',
         dataIndex: 'createtime',
         width: 150,
         sortable: true
     },
     {
-        header: 'price',
+        header: '订单价格',
         dataIndex: 'price',
         width: 80,
         sortable: true
     },
     {
-        header: 'evaluate',
+        header: '订单整体评价',
         dataIndex: 'evaluate',
         width: 200,
         sortable: true

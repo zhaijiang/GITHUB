@@ -9,7 +9,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 	alias: 'widget.OrdersOperatePanel',
 	width: 1000,
 	constrain: true,
-	title:'Orders Detail',
+	title:'订单详细信息',
 	modal: true,
 	height: 600,
 	layout: 'vbox',
@@ -36,16 +36,16 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			},
 			items: [{
 				xtype: 'textfield',
-				fieldLabel: 'oid',
+				fieldLabel: '订单ID',
 				name: 'oid'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'uid',
+				fieldLabel: '用户ID',
 				hidden:true,
 				name: 'uid'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'did',
+				fieldLabel: '医生ID',
 				hidden:true,
 				name: 'did'
 			}, 
@@ -57,7 +57,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 				xtype: 'textfield',
 				labelWidth: 110,
 				width:290,
-				fieldLabel: 'dname',
+				fieldLabel: '医生姓名',
 				name: 'dname'
 			},{
 			  xtype:'button',
@@ -83,7 +83,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			},
 			{
 				xtype: 'textfield',
-				fieldLabel: 'dphone',
+				fieldLabel: '医生电话',
 				name: 'dphone'
 			}, 
 				{
@@ -94,7 +94,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 				xtype: 'textfield',
 				labelWidth: 110,
 				width:290,
-				fieldLabel: 'uname',
+				fieldLabel: '用户姓名',
 				name: 'uname'
 			},{
 			  xtype:'button',
@@ -121,18 +121,18 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			},
 			{
 				xtype: 'textfield',
-				fieldLabel: 'uphone',
+				fieldLabel: '用户电话',
 				name: 'uphone'
 			}, 
 			 {
 				xtype: 'textfield',
-				fieldLabel: 'dlvl',
+				fieldLabel: '医生当时级别',
 				hidden:true,
 				name: 'dlvl'
 			}, 
 	         {
 			xtype : 'combo',
-			fieldLabel : 'status',
+			fieldLabel : '订单状态',
 			displayField:'name',
 			valueField:'value',
 			name : 'status',
@@ -151,7 +151,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			items:[
 			{
 				xtype: 'textfield',
-				fieldLabel: 'record',
+				fieldLabel: '问诊记录',
 				labelWidth: 110,
 				width:290,
 				name: 'record'
@@ -163,7 +163,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			  handler:function()
 			  {
 			  	Ext.create('Ext.window.Window',{
-			    title:'pic',
+			    title:'问诊记录',
 			  	width:500,
 			  	autoScroll:true,
 			  	height:500,
@@ -183,99 +183,102 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 				name: 'record_pic'
 			}, {
 				xtype: 'datetimefield',
-				fieldLabel: 'createtime',
+				fieldLabel: '创建时间',
 				name: 'createtime'
 			}, {
+				xtype: 'textfield',
+				fieldLabel: '第一次评价内容',
+				name: 'eval1'
+			},
+			 {
 				xtype: 'datetimefield',
-				fieldLabel: 'evaltime1',
+				fieldLabel: '第一次评价时间',
 				name: 'evaltime1'
-			}, {
+			},{
+				xtype: 'textfield',
+				fieldLabel: '第一次回复内容',
+				name: 'reeval1'
+			},
+			{
 				xtype: 'datetimefield',
-				fieldLabel: 'reevaltime1',
+				fieldLabel: '第一次回复时间',
 				name: 'reevaltime1'
-			}, {
+			},{
+				xtype: 'textfield',
+				fieldLabel: '第二次评价内容',
+				name: 'eval2'
+			},  {
 				xtype: 'datetimefield',
-				fieldLabel: 'evaltime2',
+				fieldLabel: '第二次评价时间',
 				name: 'evaltime2'
 			}, {
+				xtype: 'textfield',
+				fieldLabel: '第二次回复内容',
+				name: 'reeval2'
+			},
+			{
 				xtype: 'datetimefield',
-				fieldLabel: 'reevaltime2',
+				fieldLabel: '第二次回复时间',
 				name: 'reevaltime2'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'eval1',
-				name: 'eval1'
-			}, {
-				xtype: 'textfield',
-				fieldLabel: 'reeval1',
-				name: 'reeval1'
-			}, {
-				xtype: 'textfield',
-				fieldLabel: 'eval2',
-				name: 'eval2'
-			}, {
-				xtype: 'textfield',
-				fieldLabel: 'reeval2',
-				name: 'reeval2'
-			},{
-				xtype: 'textfield',
-				fieldLabel: 'espeed',
+				fieldLabel: '上门速度分数',
 				name: 'espeed'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'eattitude',
+				fieldLabel: '医生态度分数',
 				name: 'eattitude'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'erecord',
+				fieldLabel: '问诊记录分',
 				name: 'erecord'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'eeffect',
+				fieldLabel: '疗效分数',
 				name: 'eeffect'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'esupport',
+				fieldLabel: '支持力度分数',
 				name: 'esupport'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'evaluate',
+				fieldLabel: '最终评价',
 				name: 'evaluate'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'uaid',
+				fieldLabel: '上门位置',
 				hidden:true,
 				name: 'uaid'
 			},{
 				xtype: 'textfield',
-				fieldLabel: 'range',
+				fieldLabel: '上门地图位置',
 				hidden:true,
 				name: 'range'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'addr',
+				fieldLabel: '上门详细地址',
 				hidden:true,
 				name: 'addr'
 			},
 			{
 				xtype: 'textfield',
-				fieldLabel: 'totaladdr',
+				fieldLabel: '上门位置',
 				name: 'totaladdr'
 			},{
 				xtype: 'textfield',
-				fieldLabel: 'distance',
+				fieldLabel: '距离',
 				name: 'distance'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'price',
+				fieldLabel: '诊费',
 				name: 'price'
 			}, {
 				xtype: 'textfield',
-				fieldLabel: 'payid',
+				fieldLabel: '支付订单号',
 				name: 'payid'
 			}, {
 				xtype: 'datetimefield',
-				fieldLabel: 'lct',
+				fieldLabel: '最后修改记录时间',
 				name: 'lct'
 			}]
 		});
@@ -287,7 +290,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			value: me.record.data.oid
 		}) 
 		var otrace = Ext.create('Ext.grid.Panel', {
-			title: 'otrace',
+			title: '订单跟踪信息',
 			height: 250,
 			width: '100%',
 			store: Ext.create('Ext.data.Store', {
@@ -314,15 +317,15 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 			columns: [{
 				xtype: 'rownumberer'
 			}, {
-				header: "oid",
+				header: "订单ID",
 				dataIndex: 'oid',
 				width: 100
 			}, {
-				header: "time",
+				header: "时间",
 				dataIndex: 'time',
 				width: 150
 			}, {
-				header: "status",
+				header: "订单状态",
 				dataIndex: 'status',
 				width: 150,
 				renderer:function(value)
@@ -342,7 +345,7 @@ Ext.define("com.module.common.orders.OrdersOperatePanel", {
 					return value;
 				}
 			}, {
-				header: "remark",
+				header: "订单备注",
 				dataIndex: 'remark',
 				width: 350,
 				renderer : function(value, p, record) {
