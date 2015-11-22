@@ -126,13 +126,13 @@ Ext.define("com.module.common.orders.OrdersPayLookPanel", {
 	    {
 	        header: '平台提取金额',
 	        dataIndex: 'platin',
-	        width: 90,
+	        width: 100,
 	        sortable: true
 	    },
 	    {
 	        header: '应支付金额',
 	        dataIndex: 'docin',
-	        width: 80,
+	        width: 100,
 	        sortable: true
 	    },
 	    {

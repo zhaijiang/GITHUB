@@ -183,6 +183,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                         
                         if(status>=3)
                         {
+                        	  me.title="审核资质证书";
                         	var saveBtn = new Ext.Button( {
     							xtype : 'button',
     							text : '保存备注',
@@ -197,6 +198,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
     						});
                         	cfg.buttons.push(saveBtn);
                         }else{
+                        me.title="医生审核";
                       	var suBtn = new Ext.Button( {
 							xtype : 'button',
 							text : '审核通过',

@@ -106,7 +106,42 @@
 				me.getForm().reset();
 				month.setDisabled(true);  
 			}
-		} 
+		} ,
+		{
+			xtype : 'button',
+			//text: "导出当前页",
+			text: frame.lang.global.exportCurrentPage,
+			width:130,
+			//iconCls : 'refresh',
+			handler : function() {
+			var grid=me.ownerCt.down('grid');
+			 var store=grid.getStore();
+			var mybbar= grid.mybbar;
+			var pageData=mybbar.getPageData();
+	        var start=pageData.fromRecord;
+	        var limit=store.pageSize;
+	     
+      		 var condition=me.getQueryCondition();
+		    var exportWindow=window.open(basePath+'BackOrdersController/exportExcel?'+'condition='+Ext.encode(condition)+'&&start='+start+'&&limit='+limit
+		    	);
+		    exportWindow.focus();
+			
+			}
+		},
+			{
+			xtype : 'button',
+			text: frame.lang.global.exportAllPage,
+				width:100,
+			//iconCls : 'refresh',
+			handler : function() {
+	
+		
+      		 var condition=me.getQueryCondition();
+		    var exportWindow=window.open(basePath+'BackOrdersController/exportExcel?'+'condition='+Ext.encode(condition) 
+		    	);
+		    exportWindow.focus();
+			}
+		}
 
 		];
         me.loadCurrentTime();
@@ -344,7 +379,7 @@ Ext
 					}, {
 						header : '医生ID',
 						dataIndex : 'did',
-						width : 70,
+						width : 100,
 						sortable : true
 					},
 					 {

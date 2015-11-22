@@ -115,7 +115,7 @@ Ext
 					}, {
 						header : '医生ID',
 						dataIndex : 'did',
-						width : 70,
+						width : 100,
 						sortable : true
 					},
 					 {
@@ -182,7 +182,7 @@ Ext
 											          ,'x','y','level','price','espeed','eattitude','erecord','eeffect'
 											          ,'esupport','intro','times','status','token','remark','lastlogintime'
 											          ,'lct','regtime','account','idno','insend','insbegin','org','ctftype'
-											          ,'ctflvl','svcrange','ptlvl' ],
+											          ,'ctflvl','svcrange','ptlvl','orgname','ctflvlname' ,'ctftypename','ptlvlname'],
 											autoLoad : true,
 											pageSize : frame.config.pageSize,
 											proxy : {

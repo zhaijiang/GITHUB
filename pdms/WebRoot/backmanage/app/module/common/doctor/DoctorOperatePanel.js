@@ -173,19 +173,40 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 					 				{
 					 					xtype : 'textfield',
 					 					fieldLabel : '资格等级',
+					 					hidden:true,
 					 					name : 'ctflvl'
 					 					
 					 				},
 					 				{
 					 					xtype : 'textfield',
+					 					fieldLabel : '资格等级',
+					 					name : 'ctflvlname'
+					 					
+					 				},
+					 				{
+					 					xtype : 'textfield',
 					 					fieldLabel : '资格类型',
+					 					hidden:true,
 					 					name : 'ctftype'
 					 					
 					 				},
 					 				{
 					 					xtype : 'textfield',
+					 					fieldLabel : '资格类型',
+					 					name : 'ctftypename'
+					 					
+					 				},
+					 				{
+					 					xtype : 'textfield',
 					 					fieldLabel : '服务机构',
+					 					hidden:true,
 					 					name : 'org'
+					 					
+					 				},
+					 				{
+					 					xtype : 'textfield',
+					 					fieldLabel : '服务机构',
+					 					name : 'orgname'
 					 					
 					 				},
 					 				{
@@ -203,7 +224,14 @@ Ext.define("com.module.common.doctor.DoctorOperatePanel",
 					 				{
 					 					xtype : 'textfield',
 					 					fieldLabel : '职称等级',
+					 					hidden:true,
 					 					name : 'ptlvl'
+					 					
+					 				},
+					 				{
+					 					xtype : 'textfield',
+					 					fieldLabel : '职称等级',
+					 					name : 'ptlvlname'
 					 					
 					 				},
 					 				{

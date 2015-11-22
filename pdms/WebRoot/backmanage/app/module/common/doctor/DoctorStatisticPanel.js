@@ -115,16 +115,7 @@ Ext.define("com.module.common.doctor.DoctorStatisticPanel",{
 								color:'#CCCCCC'
 								 
 							};
-							var series8 = { 
-							    name: "执业医师",		
-								color:'#DDDDCC'
-								 
-							};
-							var series9 = { 
-								    name: "助理执业医师",		
-									color:'#EEEECC'
-									 
-								};
+					
 							alarmChart.addSeries(series1);
 							alarmChart.addSeries(series2);
 							alarmChart.addSeries(series3);
@@ -132,8 +123,7 @@ Ext.define("com.module.common.doctor.DoctorStatisticPanel",{
 							alarmChart.addSeries(series5);
 							alarmChart.addSeries(series6);
 							alarmChart.addSeries(series7);
-							alarmChart.addSeries(series8);
-							alarmChart.addSeries(series9);
+
 							me.loadData(true);
 						
 						}
@@ -174,8 +164,7 @@ Ext.define("com.module.common.doctor.DoctorStatisticPanel",{
 				    chart.series[4].setData([statistic.level2]);
 					chart.series[5].setData([statistic.level3]);
 					chart.series[6].setData([statistic.level4]);
-					chart.series[7].setData([statistic.level5]);
-					chart.series[8].setData([statistic.level6]);
+
 				} else {
 					if(!auto)
 					{

@@ -23,9 +23,11 @@ import ems.backmanage.frame.database.entity.QueryCondition;
 import ems.backmanage.frame.util.FrameDatabaseUtil;
 import ems.backmanage.frame.util.FrameJsonUtil;
 import ems.backmanage.helper.IgnoreInterceptor;
+import ems.backmanage.sql.SqlBack;
 import ems.backmanage.sql.SqlBackDoctor;
 import ems.controller.BaseController;
 import ems.model.Doctor;
+import ems.util.ConstClass;
 
 /**
  * 后台医生处理类 
@@ -67,10 +69,19 @@ public class BackDoctorController extends BaseController {
 	public void loadDoctorInfo()
 	{
 		 try {
-			  String did = getPara("data");
-				Doctor doctor = new Doctor();
-				doctor = Doctor.dao.getByDoctorDid(did);
+			    String did = getPara("data");
+			     Map<String,String> certype= ConstClass.ENUM_REF_HASHMAP.get(BackConfig.PQCERTIFY_TYPE);
+			     Map<String,String> cerlevel= ConstClass.ENUM_REF_HASHMAP.get(BackConfig.PQCERTIFY_LEVEL);
+			     Map<String,String> level= ConstClass.ENUM_REF_HASHMAP.get(BackConfig.PTCERTIFY_LEVEL);
+
+				Record doctor = Db.findFirst(SqlBackDoctor.loadDoctorByCondition+" and did=? ",did);
 				List<Record> record = Doctor.dao.getCertificationByDid(did);
+				if(doctor!=null)
+				{
+					doctor.set("ctflvlname", cerlevel.get(doctor.get("ctflvl").toString()));
+					doctor.set("ctftypename", certype.get(doctor.get("ctftype").toString()));
+					doctor.set("ptlvlname", level.get(doctor.get("ptlvl").toString()));
+				}
 				setAttr("doctorinfo",doctor);
 				setAttr("doctorpic",record);
 				

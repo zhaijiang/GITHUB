@@ -481,7 +481,7 @@ Ext.define("com.module.common.orders.OrdersStatisticPanel_Result",{
 			},
 			 {
 				header : "医生电话",
-				dataIndex : 'dname',
+				dataIndex : 'phone',
 				width : 100
 			},
 			 {

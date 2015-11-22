@@ -599,7 +599,7 @@ Ext.define("com.module.common.user.UserOperatePanel",{
 				{
 					xtype : 'textfield',
 					fieldLabel : '身份证号',
-					name : 'indo'
+					name : 'idcard'
 					
 				},
 				{

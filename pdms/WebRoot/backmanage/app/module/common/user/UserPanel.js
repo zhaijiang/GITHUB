@@ -146,20 +146,15 @@ Ext
 					 		         sortable : true,
 					 		         renderer:function(value)
 					 		         {
-					 		         	if(value==1)
-					 		         	{
-					 		         		return '女';
-					 		         	}
-					 		         	else
-					 		         	{
-					 		         		return '男';
-					 		         	}
+					 		        	if(value==0)return "女";
+					 					if(value==1)return "男";
+					 					if(value==2)return "未知";
 					 		         }
 					 	         }, 
 					 	          {
 					 	             header : '身份证号',
-					 	    	     dataIndex : 'indo',
-					 	             width : 80,
+					 	    	     dataIndex : 'idcard',
+					 	             width : 200,
 					 		         sortable : true
 					 	         }, 
 					 	          {
@@ -213,7 +208,7 @@ Ext
 								.create(
 										'Ext.data.Store',
 										{
-											fields : ['uid','phone','pwd','name','born','sex','indo','pic',
+											fields : ['uid','phone','pwd','name','born','sex','idcard','pic',
 											          'uaid','regtime','lastlogintime','token','lct','addr','range'],
 											autoLoad : true,
 											pageSize : frame.config.pageSize,

@@ -35,7 +35,7 @@ Ext.define("com.module.common.orders.OrdersBatchPayPanel", {
 					}, {
 						header : '医生ID',
 						dataIndex : 'did',
-						width : 70,
+						width : 100,
 						sortable : true
 					},
 					 {

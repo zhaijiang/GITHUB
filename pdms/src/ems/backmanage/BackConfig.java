@@ -33,5 +33,18 @@ public class BackConfig {
 	 *  医生被提成比例
 	 */
 	public  static final String DOCTOR_CUT="doctor_cut";
+	
+	/**
+	 *  医师资格等级
+	 */
+	public  static final String PQCERTIFY_LEVEL="pqcertify_level";
+	/**
+	 *  医师职称等级
+	 */
+	public  static final String PTCERTIFY_LEVEL="ptcertify_level";
+	/**
+	 * 医师资格类型
+	 */
+	public  static final String PQCERTIFY_TYPE="pqcertify_type";
 
 }
