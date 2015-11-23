@@ -241,14 +241,22 @@ Ext
 													me.lookDoctor();
 												}
 											},
-											
 											{
 												xtype : 'button',
-												text : "审核",
+												text : "医生审核",
 												width:70,
 												//iconCls : 'add.gif',
 												handler : function() {
-													me.auditDoctor();
+													me.auditDoctor(0);
+												}
+											},
+											{
+												xtype : 'button',
+												text : "日常审核",
+												width:70,
+												//iconCls : 'add.gif',
+												handler : function() {
+													me.auditDoctor(1);
 												}
 											},
 											{
@@ -359,15 +367,37 @@ Ext
 							showMode : 'look'
 						}).show();
 					},
-					auditDoctor : function() {
+					/**
+					 * mode0 医生审核
+					 * mode1 日常审核
+					 * @param {} mode
+					 */
+					auditDoctor : function(mode) {
 						var me = this;
 						var rec = frame.util.Grid.getSelectedOne(me);
 						if (Ext.isEmpty(rec)) {
 							frame.util.QuickMsg.showMsg(frame.lang.global.selectHandleData);
 							return;
 						}
+						if(mode==0)
+						{
+						  if(record.data.status>=3)
+						  {
+							frame.util.QuickMsg.showMsg2("医生已经审核通过或处于冻结状态，不需要再次进行医生审核");
+							return;
+
+						  }
+						}
+						else{
+							if(record.data.status<3)
+						   {
+							frame.util.QuickMsg.showMsg2("医生未审核通过,请在医生审核通过后再进行日常审核");
+                            return;
+						   }
+						}
 						Ext.widget('DoctorAuditPanel', {
 							title : '资格审核',
+							frameMode:mode,
 							record : rec
 						}).show();
 					}

@@ -11,7 +11,41 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					buttonAlign : 'center',
 					initComponent : function() {
 						var me = this;
-
+                    var ctflvl=Ext.create('Ext.form.ComboBox',{
+	 	                
+	 	                   allowBlank: true,
+	 	                   displayField:'name',
+			               valueField:'value',
+			               queryMode:'local',
+			               fieldLabel : "ctflvl",
+			               name:'ctflvl',
+			               store:Ext.create('Ext.data.Store',{
+				             model: 'NameValueModel'
+			              })});
+			           
+			               var ctftype=Ext.create('Ext.form.ComboBox',{
+	 	                
+	 	                   allowBlank: true,
+	 	                   displayField:'name',
+			               valueField:'value',
+			               queryMode:'local',
+			               fieldLabel : "ctftype",
+			               name:'ctftype',
+			               store:Ext.create('Ext.data.Store',{
+				             model: 'NameValueModel'
+			              })});
+			              
+			              var ptlvl=Ext.create('Ext.form.ComboBox',{
+	 	                
+	 	                   allowBlank: true,
+	 	                   displayField:'name',
+			               valueField:'value',
+			               queryMode:'local',
+			               fieldLabel : "ptlvl",
+			               name:'ptlvl',
+			               store:Ext.create('Ext.data.Store',{
+				             model: 'NameValueModel'
+			              })});
 						var formpanel = Ext.create("Ext.form.FormPanel", {
 							border : false,
 							flex:1,
@@ -70,6 +104,9 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					 					})
 					 					
 					 				},
+					 				ctflvl,
+					 				ctftype,
+					 				ptlvl,
 					 				{
 					 					xtype : 'textarea',
 					 					fieldLabel : '医生备注',
@@ -105,7 +142,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 		                      border:false,
 	                          rootVisible : false,
 	                          root : {
-			                         text : 'root',
+			                         text : 'root'
 			                    
 		                    }
 	                             });
@@ -178,10 +215,10 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
   								me.closeDoctorWnd();
   							}
   						});
-                          cfg.buttons=[];
+                        cfg.buttons=[];
                         var status=me.record.data.status;
                         
-                        if(status>=3)
+                        if(frameMode===1)
                         {
                         	  me.title="审核资质证书";
                         	var saveBtn = new Ext.Button( {
@@ -221,9 +258,9 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                         }
                         cfg.buttons.push(cancelBtn);
 					   
-						  photo.setSrc(basePath+me.record.data.photo);
-						  me.picTree=picTree;
-						  me.imgPanel=imgPanel;
+						 photo.setSrc(basePath+me.record.data.photo);
+						 me.picTree=picTree;
+						 me.imgPanel=imgPanel;
 						Ext.apply(me, cfg);
 						me.formpanel = formpanel;
 						me.callParent();
