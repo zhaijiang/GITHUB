@@ -1,3 +1,5 @@
+
+
 frame.registerModule({
 	text :"医生管理",
 	children : [

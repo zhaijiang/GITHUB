@@ -43,9 +43,18 @@ public class BackUserController extends BaseController {
 					conditions = FrameJsonUtil.getObjectMapper().readValue(
 							condition, QueryCondition[].class);
 				}
+				QueryCondition queryCondition = new QueryCondition();
+
+				queryCondition.setOperation("orderby");
+				queryCondition.setFieldName("t.uid");
+				queryCondition.setValue("asc");
+				// 创建时间
+				List<QueryCondition> cons = new ArrayList<QueryCondition>(
+						Arrays.asList(conditions));
+				cons.add(queryCondition);
 				Map<String, Object> result = FrameDatabaseUtil
 						.queryByCondition(SqlBackUser.loadUserByCondition,
-								Arrays.asList(conditions), start, limit);
+								cons, start, limit);
 				setAttr("returnData",result.get("datas"));
 				setAttr("total",result.get("total"));
 				setAttr("success",true);

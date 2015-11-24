@@ -1,5 +1,6 @@
 package ems.backmanage.controller;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import ems.backmanage.sql.SqlBack;
 import ems.backmanage.sql.SqlBackDoctor;
 import ems.controller.BaseController;
 import ems.model.Doctor;
+import ems.model.Org_ref;
 import ems.util.ConstClass;
 
 /**
@@ -51,9 +53,19 @@ public class BackDoctorController extends BaseController {
 					conditions = FrameJsonUtil.getObjectMapper().readValue(
 							condition, QueryCondition[].class);
 				}
+				
+				QueryCondition queryCondition = new QueryCondition();
+
+				queryCondition.setOperation("orderby");
+				queryCondition.setFieldName("t.did");
+				queryCondition.setValue("asc");
+				// 创建时间
+				List<QueryCondition> cons = new ArrayList<QueryCondition>(
+						Arrays.asList(conditions));
+				cons.add(queryCondition);
 				Map<String, Object> result = FrameDatabaseUtil
 						.queryByCondition(SqlBackDoctor.loadDoctorByCondition,
-								Arrays.asList(conditions), start, limit);
+								cons, start, limit);
 				setAttr("datas",result.get("datas"));
 				setAttr("total",result.get("total"));
 				setAttr("success",true);
@@ -82,9 +94,24 @@ public class BackDoctorController extends BaseController {
 					doctor.set("ctftypename", certype.get(doctor.get("ctftype").toString()));
 					doctor.set("ptlvlname", level.get(doctor.get("ptlvl").toString()));
 				}
+				Map<String,Object> combos=new HashMap<String, Object>();
+				combos.put("ctflvl", cerlevel);
+				combos.put("ctftype", certype);
+				combos.put("ptlvl", level);
+				Map<String,Object> orgs=new HashMap<String, Object>();
+				 List<Record> res = Db.find("select * from Org_ref order by orgid asc");
+				 if(res!=null&&res.size()!=0)
+				 {
+					 for(Record re:res)
+					 {
+						 orgs.put(re.get("orgid").toString(), re.get("name"));
+					 }
+				 }
+				 
+				combos.put("org", orgs);
 				setAttr("doctorinfo",doctor);
 				setAttr("doctorpic",record);
-				
+				setAttr("combos",combos);
 				setAttr("success",true);
 
 				renderJson();

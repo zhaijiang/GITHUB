@@ -11,41 +11,75 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					buttonAlign : 'center',
 					initComponent : function() {
 						var me = this;
-                    var ctflvl=Ext.create('Ext.form.ComboBox',{
+						var fieldReadOnly=true;
+						if(me.frameMode==1)
+						{
+							fieldReadOnly=false;
+						}
+                    var ctflvlcombo=Ext.create('Ext.form.ComboBox',{
 	 	                
 	 	                   allowBlank: true,
 	 	                   displayField:'name',
-			               valueField:'value',
+			               valueField:'id',
+			               
 			               queryMode:'local',
-			               fieldLabel : "ctflvl",
+			               fieldLabel : "资格等级",
 			               name:'ctflvl',
+			              
 			               store:Ext.create('Ext.data.Store',{
-				             model: 'NameValueModel'
+				             model: 'NameIdModel'
 			              })});
 			           
-			               var ctftype=Ext.create('Ext.form.ComboBox',{
+			               var ctftypecombo=Ext.create('Ext.form.ComboBox',{
 	 	                
 	 	                   allowBlank: true,
 	 	                   displayField:'name',
-			               valueField:'value',
+			               valueField:'id',
 			               queryMode:'local',
-			               fieldLabel : "ctftype",
+			               fieldLabel : "资格类型",
 			               name:'ctftype',
+			              
 			               store:Ext.create('Ext.data.Store',{
-				             model: 'NameValueModel'
+				             model: 'NameIdModel'
 			              })});
 			              
-			              var ptlvl=Ext.create('Ext.form.ComboBox',{
+			              var ptlvlcombo=Ext.create('Ext.form.ComboBox',{
 	 	                
 	 	                   allowBlank: true,
 	 	                   displayField:'name',
-			               valueField:'value',
+			               valueField:'id',
 			               queryMode:'local',
-			               fieldLabel : "ptlvl",
+			               fieldLabel : "职称等级",
 			               name:'ptlvl',
+			              
 			               store:Ext.create('Ext.data.Store',{
-				             model: 'NameValueModel'
+				             model: 'NameIdModel'
 			              })});
+			              var orgcombo=Ext.create('Ext.form.ComboBox',{
+			 	                
+		 	                   allowBlank: true,
+		 	                   displayField:'name',
+				               valueField:'id',
+				               queryMode:'local',
+				               fieldLabel : "医疗机构",
+				               name:'org',
+				               store:Ext.create('Ext.data.Store',{
+					             model: 'NameIdModel'
+				              })});
+			              
+			              var insbegin=Ext.create('Frame.form.datetime.DateTime',{
+			 	                
+		 	              
+				               fieldLabel : "医疗事故险生效起始时间",
+				               name:'insbegin'
+				          });
+			              
+			              var insend=Ext.create('Frame.form.datetime.DateTime',{
+			 	                
+			 	              
+				               fieldLabel : "医疗事故险生效结束时间",
+				               name:'insend'
+				          });
 						var formpanel = Ext.create("Ext.form.FormPanel", {
 							border : false,
 							flex:1,
@@ -104,9 +138,12 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					 					})
 					 					
 					 				},
-					 				ctflvl,
-					 				ctftype,
-					 				ptlvl,
+					 				ctflvlcombo,
+					 				ctftypecombo,
+					 				ptlvlcombo,
+					 				orgcombo,
+					 				insbegin,
+					 				insend,
 					 				{
 					 					xtype : 'textarea',
 					 					fieldLabel : '医生备注',
@@ -117,6 +154,10 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					 				}
 						   ]
 						});
+						me.ctflvlcombo=ctflvlcombo;
+						me.ctftypecombo=ctftypecombo;
+						me.ptlvlcombo=ptlvlcombo;
+						me.orgcombo=orgcombo;
                       var photo=Ext.create('Ext.Img',{
 							width:150,
 							height:150
@@ -124,7 +165,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                       
                         var doctorinfo=Ext.create('Ext.panel.Panel',{
                         	width : '100%',
-							height:151,
+							height:200,
                         	layout:'hbox',
                         	items:[formpanel,photo]
                         	
@@ -218,22 +259,31 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                         cfg.buttons=[];
                         var status=me.record.data.status;
                         
-                        if(frameMode===1)
+                        var saveBtn = new Ext.Button( {
+							xtype : 'button',
+							text : '保存修改',
+							width:100,
+							handler : function() {
+								var values=me.formpanel.getForm().getValues();
+								var record={
+										did:parseInt(me.record.data.did),
+										ctftype:values.ctftype,
+										ctflvl:values.ctflvl,
+										ptlvl:values.ptlvl,
+										org:values.org,
+										insbegin:values.insbegin,
+										insend:values.insend,
+										remark:values.remark,
+										
+								}
+								me.updateDoctor(record);
+							}
+						});
+                    	cfg.buttons.push(saveBtn);
+                        if(me.frameMode===1)
                         {
                         	  me.title="审核资质证书";
-                        	var saveBtn = new Ext.Button( {
-    							xtype : 'button',
-    							text : '保存备注',
-    							width:100,
-    							handler : function() {
-    								var record={
-    										did:parseInt(me.record.data.did),
-    										remark:me.formpanel.getForm().getValues().remark
-    								}
-    								me.updateDoctor(record);
-    							}
-    						});
-                        	cfg.buttons.push(saveBtn);
+                        	
                         }else{
                         me.title="医生审核";
                       	var suBtn = new Ext.Button( {
@@ -241,6 +291,21 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 							text : '审核通过',
 							width:100,
 							handler : function() {
+							
+								var values=me.formpanel.getForm().getValues();
+								var record={
+										did:parseInt(me.record.data.did),
+										ctftype:values.ctftype,
+										ctflvl:values.ctflvl,
+										ptlvl:values.ptlvl,
+										org:values.org,
+										insbegin:values.insbegin,
+										insend:values.insend,
+										remark:values.remark,
+										
+								}
+								me.updateDoctor(record,true);
+										
 								me.auditDoctor(true);
 							}
 						});
@@ -266,20 +331,23 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 						me.callParent();
 						me.on('render',function()
 						{
-						   this.loadDoctorInfo();
+						   me.loadDoctorInfo(2);
 						});
 
 					},
 					/**
 					 * 审核资质证书
 					 */
-					updateDoctor:function(record)
+					updateDoctor:function(record,auto)
 					{
 						var me=this;
 						if(frame.util.isNull(record))
 						{
 							
+							if(!auto)
+							{
 							frame.util.QuickMsg.showMsg2("数据为空");
+							}
 							return
 						}
 						Ext.Ajax
@@ -292,18 +360,27 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 								var result = Ext
 										.decode(response.responseText);
 								if (result.success == true) {
+									if(!auto)
+									{
 									frame.util.QuickMsg
 											.operateSuccess(response);
+									}
 								  
 									
 								} else {
+									if(!auto)
+									{
 									frame.util.QuickMsg
 											.operateFailure(response);
+									}
 								}
 							},
 							failure : function(response, options) {
+								if(!auto)
+								{
 								frame.util.QuickMsg
 										.showMsg(frame.lang.global.netError);
+								}
 								;
 							}
 						});
@@ -426,7 +503,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 
 					},
 					/**
-					 * mode:1 只刷新图片 不刷新医生信息
+					 * mode:1 只刷新图片 不刷新医生信息 2:初始化combo
 					 */
 				 loadDoctorInfo:function(mode)
 					{
@@ -443,6 +520,84 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 											if (result.success == true) {
 												//frame.util.QuickMsg
 														//.operateSuccess(response);
+												
+												if(mode==2)
+												{
+												var combos=result.combos;
+												var	ctflvl=combos.ctflvl;
+												var	ctftype=combos.ctftype;
+												var	ptlvl=combos.ptlvl;
+												var	org=combos.org;
+													
+												if(!frame.util.isNull(ctflvl))
+												{
+													var comboss=[{id:0,name:"未知"}];
+													for(key in ctflvl)
+													{
+														  var combo = Ext.create('NameIdModel', {
+								                                name : ctflvl[key],
+								                                id  : key
+								  
+								                            } );
+														  comboss.push(combo);
+														
+													}
+													me.ctflvlcombo.getStore().loadData(comboss);
+														
+												}
+												if(!frame.util.isNull(ctftype))
+												{
+													var comboss=[{id:0,name:"未知"}];
+													for(key in ctftype)
+													{
+														  var combo = Ext.create('NameIdModel', {
+								                                name : ctftype[key],
+								                                id  : key
+								  
+								                            } );
+														  comboss.push(combo);
+														
+													}
+													me.ctftypecombo.getStore().loadData(comboss);
+														
+												}
+												
+												if(!frame.util.isNull(ptlvl))
+												{
+													var comboss=[{id:0,name:"未知"}];
+													for(key in ptlvl)
+													{
+														  var combo = Ext.create('NameIdModel', {
+								                                name : ptlvl[key],
+								                                id  : key
+								  
+								                            } );
+														  comboss.push(combo);
+														
+													}
+													me.ptlvlcombo.getStore().loadData(comboss);
+														
+												}
+												
+												
+												if(!frame.util.isNull(org))
+												{
+													var comboss=[{id:0,name:"未知"}];
+													for(key in org)
+													{
+														  var combo = Ext.create('NameIdModel', {
+								                                name : org[key],
+								                                id  : key
+								  
+								                            } );
+														  comboss.push(combo);
+														
+													}
+													me.orgcombo.getStore().loadData(comboss);
+														
+												}
+												
+												}
 												
 												me.doctorpic=result.doctorpic;
 												var  pics=[];

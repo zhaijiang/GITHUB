@@ -18,7 +18,15 @@ Ext.onReady(function() {
 		console.debug("init frame complete");
 		loadModule();
 		console.debug("load module complete");
-		
+		Ext.define('NameIdModel', {
+		    extend: 'Ext.data.Model',
+		    fields: [
+		        {name: 'name',  type: 'string'},
+		        {name: 'id',   type: 'int'}
+
+		    ]
+
+		});
 
 	});
 /**

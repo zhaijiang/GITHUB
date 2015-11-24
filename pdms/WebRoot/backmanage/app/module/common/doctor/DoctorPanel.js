@@ -381,7 +381,7 @@ Ext
 						}
 						if(mode==0)
 						{
-						  if(record.data.status>=3)
+						  if(rec.data.status>=3)
 						  {
 							frame.util.QuickMsg.showMsg2("医生已经审核通过或处于冻结状态，不需要再次进行医生审核");
 							return;
@@ -389,9 +389,9 @@ Ext
 						  }
 						}
 						else{
-							if(record.data.status<3)
+							if(rec.data.status<3||rec.data.status==7)
 						   {
-							frame.util.QuickMsg.showMsg2("医生未审核通过,请在医生审核通过后再进行日常审核");
+							frame.util.QuickMsg.showMsg2("医生未审核通过或处于冻结状态,请在医生审核通过后再进行日常审核");
                             return;
 						   }
 						}
