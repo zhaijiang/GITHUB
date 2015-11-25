@@ -12,7 +12,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					initComponent : function() {
 						var me = this;
 						var fieldReadOnly=true;
-						if(me.frameMode==1)
+						if(me.frameMode==0)
 						{
 							fieldReadOnly=false;
 						}
@@ -21,7 +21,8 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 	 	                   allowBlank: true,
 	 	                   displayField:'name',
 			               valueField:'id',
-			               
+			           	width:350,
+						labelWidth:90,
 			               queryMode:'local',
 			               fieldLabel : "资格等级",
 			               name:'ctflvl',
@@ -38,7 +39,8 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 			               queryMode:'local',
 			               fieldLabel : "资格类型",
 			               name:'ctftype',
-			              
+			           	width:350,
+						labelWidth:90,
 			               store:Ext.create('Ext.data.Store',{
 				             model: 'NameIdModel'
 			              })});
@@ -51,7 +53,8 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 			               queryMode:'local',
 			               fieldLabel : "职称等级",
 			               name:'ptlvl',
-			              
+			           	width:350,
+						labelWidth:90,
 			               store:Ext.create('Ext.data.Store',{
 				             model: 'NameIdModel'
 			              })});
@@ -63,20 +66,24 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 				               queryMode:'local',
 				               fieldLabel : "医疗机构",
 				               name:'org',
+				           	width:350,
+							labelWidth:90,
 				               store:Ext.create('Ext.data.Store',{
 					             model: 'NameIdModel'
 				              })});
 			              
 			              var insbegin=Ext.create('Frame.form.datetime.DateTime',{
 			 	                
-		 	              
+			            		width:350,
+								labelWidth:150,
 				               fieldLabel : "医疗事故险生效起始时间",
 				               name:'insbegin'
 				          });
 			              
 			              var insend=Ext.create('Frame.form.datetime.DateTime',{
 			 	                
-			 	              
+			            	  width:350,
+								labelWidth:150,
 				               fieldLabel : "医疗事故险生效结束时间",
 				               name:'insend'
 				          });
@@ -87,7 +94,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 							defaults : {
 								xtype : 'textfield',
 								hideTrigger:true,
-								width:300,
+								width:350,
 								labelWidth:90,
 								margin:'5 10 0 10',
 								readOnly:true
@@ -102,7 +109,8 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 							         {
 							     		xtype : 'textfield',
 							     		fieldLabel : '医生姓名',
-							     		name : 'name'
+							     		name : 'name',
+							     		readOnly:fieldReadOnly
 							     		
 							     	},
 					       	       {
@@ -111,20 +119,41 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					 					name : 'phone'
 					 					
 					 				},
-					 				
+					 		       {
+					 					xtype : 'datetimefield',
+					 					fieldLabel : '出生年月日',
+					 					name : 'born',
+							     		readOnly:fieldReadOnly
+					 					
+					 				},
+					 				{
+					 					xtype : 'textfield',
+					 					fieldLabel : '身份证号',
+					 					name : 'idno',
+							     		readOnly:fieldReadOnly
+					 					
+					 				},
 					 				
 					 				{
-					 					xtype : 'combo',
+					 					xtype : 'combobox',
 					 					fieldLabel : '医生性别',
 					 					displayField:'name',
 					 					valueField:'value',
+					 					hideTrigger:false,
 					 					name : 'sex',
-					 					store:Ext.create('Ext.data.ArrayStore',{
+					 					 queryMode: 'local',
+							     		 readOnly:fieldReadOnly,
+					 					  store: Ext.create('Ext.data.Store',{
 					 						fields:['name','value'],
-					 						data:[['女',0],['男',1],['未知',2]]
+					 						 data:[
+					 						       {"name":"女", "value":0},
+					 						      {"name":"男", "value":1},
+					 						     {"name":"未知", "value":2}
+					 						       ]
 					 					})
 					 					
 					 				},
+					 				
 					 				{
 					 					xtype : 'combo',
 					 					fieldLabel : '医生状态',
@@ -148,6 +177,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					 					xtype : 'textarea',
 					 					fieldLabel : '医生备注',
 					 					width:650,
+					 					height:60,
 					 					readOnly:false,
 					 					name : 'remark'
 					 					
@@ -165,20 +195,21 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                       
                         var doctorinfo=Ext.create('Ext.panel.Panel',{
                         	width : '100%',
-							height:200,
+							height:250,
                         	layout:'hbox',
                         	items:[formpanel,photo]
                         	
                         });
 						 
 						 var imgP=Ext.create('Ext.Img',{
+							 autoScroll:true,
 							 flex:1
 						 });
 						 
 					
 						var picTree = Ext.create('Ext.tree.Panel', {
 		                      title :'未审核的资质证书',
-		                      width:180,
+		                      width:210,
 		                      height:'100%',
 		                      border:false,
 	                          rootVisible : false,
@@ -192,7 +223,7 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
                   	        	
                 	        	  width:100,
                 	        	  hidden:true,
-                	        	  margin:'150 0 0 10',
+                	        	  margin:'100 0 0 10',
                 	        	  text:'审核通过',
                 	        	  handler:function()
                 	        	  {
@@ -230,7 +261,13 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 	                        			        	 }
 	                        				});
 	                        		imgP.show();
-	                        		picaudit.show();
+	                        		if(record.data.text.indexOf('已审核')==-1)
+	                        			{
+	                        		      picaudit.show();
+	                        			}
+	                        		else{
+	                        			picaudit.hide();
+	                        		}
 	                        	
 	                        	
 	                        		
@@ -276,6 +313,13 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 										remark:values.remark,
 										
 								}
+								if(me.frameMode==0)
+								{
+									record.name=values.name;
+									record.born=values.born;
+									record.sex=values.sex;
+									record.idno=values.idno;
+								}
 								me.updateDoctor(record);
 							}
 						});
@@ -302,6 +346,11 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 										insbegin:values.insbegin,
 										insend:values.insend,
 										remark:values.remark,
+										name:values.name,
+										born:values.born,
+										sex:values.sex,
+										idno:values.idno
+									  
 										
 								}
 								me.updateDoctor(record,true);
@@ -442,11 +491,24 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 					{
 						
 						var me=this;
-						if(pass==true&&me.picTree.getRootNode().hasChildNodes())
+						if(pass==true)
 						{
-							
+							var rootNode=me.picTree.getRootNode();
+							var allaudit=true;
+							rootNode.eachChild(function(child){
+								
+								if(child.data.text.indexOf('已审核')==-1)
+									{
+									allaudit=false;
+									return false;
+									}
+								
+							})
+							if(!allaudit)
+								{
 							frame.util.QuickMsg.showMsg2("资质证书没有全部审核通过,无法将该医生至为审核通过状态");
 							return
+								}
 						}
 						if(me.formpanel.getForm().getValues().status>=3)
 						{
@@ -603,14 +665,17 @@ Ext.define("com.module.common.doctor.DoctorAuditPanel",
 												var  pics=[];
 												Ext.each(me.doctorpic,function(data)
 				                        				{
-				                        			          if(!frame.util.isNull(data.pic4v)&&data.pic4v!=data.picpath)
+				                        			         // if(!frame.util.isNull(data.pic4v)&&data.pic4v!=data.picpath)
+													          var text=data.name;
+													            if(data.status==2)
 				                        			         {
-				                        			        	  pics.push({
-				                        			        		  id:data.ctid,
-				                        			        		  text:data.name
-				                        			        	  });  
+				                        			        	 text=text+"(已审核)";
 				                        			         }
-				                        			        	
+													          pics.push({
+				                        			        		  id:data.ctid,
+				                        			        		  text:text,
+				                        			        		  status:data.status
+				                        			         }); 
 				                        				});
 												me.picTree.getRootNode().removeAll();
 												if(pics.length!=0)

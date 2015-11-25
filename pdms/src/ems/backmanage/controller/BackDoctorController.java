@@ -88,6 +88,7 @@ public class BackDoctorController extends BaseController {
 
 				Record doctor = Db.findFirst(SqlBackDoctor.loadDoctorByCondition+" and did=? ",did);
 				List<Record> record = Doctor.dao.getCertificationByDid(did);
+				
 				if(doctor!=null)
 				{
 					doctor.set("ctflvlname", cerlevel.get(doctor.get("ctflvl").toString()));
@@ -156,7 +157,7 @@ public class BackDoctorController extends BaseController {
 			   String ctid= getPara("ctids");
 			    Integer[] ctids = FrameJsonUtil.getObjectMapper().readValue(ctid, Integer[].class);
 			     String ins=FrameDatabaseUtil.getInString(ctids);
-			    int result = Db.update(SqlBackDoctor.updateCertification+ins,-1,new Date(),did);
+			    int result = Db.update(SqlBackDoctor.updateCertification+ins,-1,new Date(),2,did);
 			    if(result>0)
 			    {
 			       setAttr("success",true);
@@ -230,12 +231,13 @@ public class BackDoctorController extends BaseController {
 			    for(Object sta:statuss)
 			    {
 			    	Object[] status=(Object[]) sta;
-			    	if(Integer.parseInt(status[0].toString())>=BackConfig.DOC_STATUS_PASS_UNCOMPLETE)
+			    	int statusint = Integer.parseInt(status[0].toString());
+			    	if(statusint>=BackConfig.DOC_STATUS_PASS_UNCOMPLETE&&statusint!=BackConfig.DOC_STATUS_FREEZE)
 			    	{
 			    		pass+=Integer.parseInt(status[1].toString());
 			    	}
 			    	
-			    	if(BackConfig.DOC_STATUS_PASSING==Integer.parseInt(status[0].toString()))
+			    	if(BackConfig.DOC_STATUS_PASSING==statusint)
 			    	{
 			    		passing=Integer.parseInt(status[1].toString());
 			    	}

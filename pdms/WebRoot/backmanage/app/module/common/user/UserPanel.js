@@ -168,13 +168,13 @@ Ext
 					 	          {
 					 	             header : '地图位置',
 					 	    	     dataIndex : 'range',
-					 	             width : 150,
+					 	             width : 200,
 					 		         sortable : true
 					 	         },
 					 	        {
 					 	             header : '详细地址',
 					 	    	     dataIndex : 'addr',
-					 	             width : 150,
+					 	             width : 200,
 					 		         sortable : true
 					 	         },
 					 	         {
@@ -193,6 +193,7 @@ Ext
 					 	             header : '鉴权串',
 					 	    	     dataIndex : 'token',
 					 	             width : 80,
+					 	             hidden:true,
 					 		         sortable : true
 					 	         },
 					 	         {
